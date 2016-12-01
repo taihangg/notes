@@ -1128,7 +1128,7 @@ git log SPC g l l
 
 (add-hook 'js2-mode-hook 'my-js-mode-hook)
 
- 
+ M-: eval-expression
 
 
 
