@@ -1487,6 +1487,8 @@ C-h f interactive
 
 ;;;;; 神器
 occur + iedit
+M-s o       编辑命令e
+SPC s e     evil-iedit-state/iedit-mode
 
 
 ;;; org tag
