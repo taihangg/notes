@@ -1,0 +1,33 @@
+top cm d1 M
+-H 线程
+-b 批量模式
+-n1 执行次数
+-o 排序字段; -oRES : 按RES字段排序; -O查看字段名字;
+-p 指定要监控的pid
+
+
+
+netstat -Wenptu
+netstat -ano
+
+
+### 查看监听端口的进程
+lsof -Pnl +M
+
+
+# 查找代码文件
+find . -iregex ".*\.\(cpp\|h\|c\)"
+
+
+先创建好目录
+tar zxvf snort-3.0.0-a4-217-auto.tar.gz -C ./snort-3.0.0-a4-217-auto
+
+
+#sort
+sort --debug -ub -k 5.8,5.0
+--debug     debug模式
+-u          去重
+-b          去出前导空格
+-k          <起始列号>.<列内起始字符位置>[,<结束列号>.<列内结束字符位置>。<列内结束字符位置>为0表示到列结束，可省略不写。
+
+
