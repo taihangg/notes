@@ -1487,9 +1487,10 @@ C-h f interactive
 
 ;;;;; 神器
 occur + iedit
-M-s o       编辑命令e
+SPC o d     编辑命令e
 SPC s e     evil-iedit-state/iedit-mode
 
+SPC v       er/expand-region
 
 ;;; org tag
 如果手工输入标签，在标题后设置标签，键入:后，M-Tab自动提供标签的补齐。
