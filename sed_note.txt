@@ -187,6 +187,8 @@ sed "10r /root/test.txt" a.txt > b.txt      #在第10行插入文件
 
 #行范围
 sed -n '5,10{/pattern/p}' file
+sed -n '1,/^tagname$/!p' file
+sed -n "/aaa/,/bbb/{=;p;}" file     #全局每一个aaa和bbb行之间的行都会被输出
 
 #只匹配一次
 echo  "aasdfasdfasdf" | sed -n "/^Revision: /{s/^Revision: \(.*\)$/\1/p;q;}"

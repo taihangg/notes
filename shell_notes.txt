@@ -8,22 +8,23 @@ top cm d1 M
 
 
 netstat -Wenptu
-netstat -ano
+netstat -anope
 
 
-### 查看监听端口的进程
+## 查看监听端口的进程
 lsof -Pnl +M
 
 
-# 查找代码文件
+## 查找代码文件
 find . -iregex ".*\.\(cpp\|h\|c\)"
 
 
-先创建好目录
+## 解压，需要先创建好目录
 tar zxvf snort-3.0.0-a4-217-auto.tar.gz -C ./snort-3.0.0-a4-217-auto
 
 
-#sort
+
+## sort
 sort --debug -ub -k 5.8,5.0
 --debug     debug模式
 -u          去重

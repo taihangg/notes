@@ -1485,13 +1485,26 @@ Org Mode
 C-h f interactive
 
 
-;;;;; 神器
-occur + iedit
+;;;;; 神器 occur + iedit
 SPC o d     编辑命令e
 SPC s e     evil-iedit-state/iedit-mode
+
+SPC j i     imenu
 
 SPC v       er/expand-region
 
 ;;; org tag
 如果手工输入标签，在标题后设置标签，键入:后，M-Tab自动提供标签的补齐。
 更方便的做法是在正文部分用C-c C-q 或直接在标题上用C-c C-c创建标签，这种方式可以列出所有预定义的标签以便选取。
+
+
+SPC t g     toggle golden ratio
+SPC t -     center point
+
+SPC t h a   spacemacs/symbol-highlight-phrase
+SPC s h     spacemacs/symbol-highlight
+SPC s c     spacemacs/evil-search-clear-highlight
+
+SPC s a f   helm-do-ag
+
+
