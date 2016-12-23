@@ -177,7 +177,7 @@ sed "s/\x0A\[\x41/abc/g" a.txt
 
 
 #直接对指定行做处理
-sed 
+
 sed "1s/\x11\x11\x11/\xEF\xBB\xBF" a.txt    #第一行
 sed "1i\\\xEF\xBB\xBF" a.txt    
 sed "1a\\\x11\x22\x33" a.txt
@@ -189,6 +189,77 @@ sed "10r /root/test.txt" a.txt > b.txt      #在第10行插入文件
 sed -n '5,10{/pattern/p}' file
 sed -n '1,/^tagname$/!p' file
 sed -n "/aaa/,/bbb/{=;p;}" file     #全局每一个aaa和bbb行之间的行都会被输出
+sed -n "/ccc/,\$wccc.out" file  ccc到最后一行
 
 #只匹配一次
 echo  "aasdfasdfasdf" | sed -n "/^Revision: /{s/^Revision: \(.*\)$/\1/p;q;}"
+
+
+
+
+#### 分离文件内容，将 ###aaa_start 行到 ###aaa_end 行的内容输出到 aaa.txt 文件，###bbb_start 行到 ###bbb_end 行的内容输出到 bbb.txt 文件，
+## 两文件内容允许交叉重叠，也就是说每一行都会交给两个表达式处理
+sed -n -e "/###aaa_start/,/###aaa_end/waaa.out" -e "/###bbb_start/,/###bbb_end/wbbb.out" data.txt
+
+## aaa.out文件和bbb.out文件的内容不能重叠，否则无法正确的匹配到bbb.out的开始行
+sed -n "
+/###aaa_start/{
+    :tag_a_loop;
+    waaa.out
+    n;
+    /###aaa_end/{
+        waaa.out
+        btag_a_end;
+    }
+    btag_a_loop;
+    :tag_a_end;
+};
+/###bbb_start/{
+    :tag_b_loop;
+    wbbb.out
+    n;
+    /###bbb_end/{
+        wbbb.out
+        btag_b_end;
+    }
+    btag_b_loop;
+    :tag_b_end;
+};" data.txt
+
+## 不包含收尾标题行
+sed -n "
+/###aaa_start/{
+    :tag_a_loop;
+    n;
+    /###aaa_end/!{
+        waaa.out
+        btag_a_loop;
+    }
+};
+/###bbb_start/{
+    :tag_b_loop;
+    n;
+    /###bbb_end/!{
+        wbbb.out
+        btag_b_loop;
+    }
+};
+" data.txt
+
+
+
+
+## 某一行到文件末尾都保存成一个文件
+sed -n -e "/###aaa_start/,/###aaa_end/waaa.out" -e "/###bbb_start/,/###bbb_end/wbbb.out" -e "/###ccc_start/,\$wccc.out" data.txt
+
+## 不保存收尾标记的行
+sed -n "
+/###aaa_start/{
+    :tag_a_loop;
+    n;
+    /###aaa_end/!{
+        waaa.out
+        btag_a_loop;
+    }
+};" data.txt
+
