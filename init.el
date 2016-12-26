@@ -460,7 +460,10 @@ values."
     (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
     (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
     
-            
+    
+    (with-eval-after-load 'org
+        ;; here goes your Org config 
+        )
     (with-eval-after-load 'org-agenda
         ;;(require 'org-projectile)
         ;;(push ("~/org-notes/TODOs.org" "~/org-notes/TODOs2.org") org-agenda-files)
@@ -472,11 +475,6 @@ values."
     ;; C-e
     (define-key evil-insert-state-map (kbd "C-e") 'mwim-end-of-code-or-line)
     (define-key evil-motion-state-map (kbd "C-e") 'mwim-end-of-code-or-line)
-
-    (with-eval-after-load 'org
-        ;; here goes your Org config 
-      
-    )
 
   )
 
