@@ -482,3 +482,20 @@ values."
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+)
+
+(defun my-byte-compile-and-recompile-directory (directory)
+       (interactive "DByte compile and recompile directory: \n")
+       (byte-recompile-directory directory 0)
+       )
+
+(defun my-byte-compile-and-recompile-directory-force (directory)
+       (interactive "DByte compile and recompile directory: \n")
+       (byte-recompile-directory directory 0 t)
+       )
+       
