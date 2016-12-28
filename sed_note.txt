@@ -226,7 +226,7 @@ sed -n "
     :tag_b_end;
 };" data.txt
 
-## 不包含收尾标题行
+## 不包含首尾标题行
 sed -n "
 /###aaa_start/{
     :tag_a_loop;
