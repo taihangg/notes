@@ -263,3 +263,5 @@ sed -n "
     }
 };" data.txt
 
+## 在原来行之前插入行号，或者用grep -n
+sed = test.txt | sed 'N;s/\n/\t/'

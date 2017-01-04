@@ -11,9 +11,14 @@ set print pretty
 
 
 define gobt
-  set logging file ~/gdblog
-  set logging overwrite on
-  set logging redirect on
+
+  set logging file ~/gdblog ## 改变记录文件，默认记录文件是gdb.txt。
+## 默认这个项目是关闭，
+## 也就是以添加的形式将记录信息写入文件，这样之前文件中的信息不会被覆盖掉。
+## 注意：如果设置这个选项的时候记录功能已经打开，需要关闭记录功能再重新打开才能起作用。
+  set logging overwrite off
+  
+  set logging redirect on ## 设置输出信息只记录到文件不作显示。
   set logging on
   bt
   set logging off
@@ -30,7 +35,7 @@ end
 gdb -args ./a.out -c -m -t
 set args –b –x
 show args
-
+run args
 cd
 dir
 
@@ -64,6 +69,13 @@ layout asm
 layout split
 winheight src +/-5
 focus next/prev
+
+
+gdb 调试跟踪多进程程序
+gdb只能跟踪一个进程（默认是跟踪父进程），而不能同时跟踪多个进程，
+可以设置gdb跟踪父进程还是子进程, 命令如下:
+set follow-fork-mode parent 跟踪父进程, 默认
+set follow-fork-mode child  跟踪子进程
 
 
 set scheduler-locking on            # 多线程下禁止线程切换
@@ -165,3 +177,13 @@ quit
 
 打印字符串，无省略
 printf "%s\r\n", addr
+
+
+默认编译的时候，调试过程是看不见宏的值的。编译时候需要给选项。-g3
+gcc  -g3 -o test.c  test
+察看宏（macro)命令： p macroname(...)  
+就像察看一个普通变量一样。如果只想看宏的展开形势，就用如下命令：
+macro expand macroname(...) 查看展开形式
+还可以用info macro macroname 查看宏定义。
+
+
