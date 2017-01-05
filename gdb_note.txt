@@ -29,13 +29,31 @@ define gobt
 end
 
 
+## variable, 变量
+set $VAR=0
+set $VAR=$VAR+1
+
+
+## condition, 条件
+if (10 < $VAR)
+    c
+end
+
+
+## loop, 循环
+while ($VAR < obj.size)
+    printf "%d/%d\n", $VAR, obj.size
+    set $VAR=$VAR+1
+end
+
+
 
 -silent
 
 gdb -args ./a.out -c -m -t
 set args –b –x
 show args
-run args
+run <args>
 cd
 dir
 
@@ -186,4 +204,7 @@ gcc  -g3 -o test.c  test
 macro expand macroname(...) 查看展开形式
 还可以用info macro macroname 查看宏定义。
 
+
+## 保存断点到文件
+save breakpoint outputfile
 
