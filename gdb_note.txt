@@ -49,6 +49,7 @@ end
 
 p/x data@len
 p/x data[0]@len
+p/x *data@len
 
 
 ## variable, 变量
