@@ -29,6 +29,28 @@ define gobt
 end
 
 
+define showmem
+    set $DATA=$arg0
+    set $LEN=$arg1
+    printf "%p:%d\n", $DATA, $LEN
+    
+    set $COUNT=0
+    while ($COUNT < $LEN)
+        printf "0x%02x ", *(unsigned char*)($DATA+$COUNT)
+        set $COUNT=$COUNT+1
+        if (0 == ($COUNT % 16))
+            printf "\n"
+        end
+    end
+    
+    printf "\n"
+    
+end
+
+p/x data@len
+p/x data[0]@len
+
+
 ## variable, 变量
 set $VAR=0
 set $VAR=$VAR+1
