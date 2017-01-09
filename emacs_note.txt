@@ -1511,3 +1511,7 @@ SPC s a f   helm-do-ag
 SPC m       +major-mode-cmd
 
 C-u M-! date    插入当前时间
+
+org schedule 或者 deadline 的时候，直接输入13:45可插入小时分钟
+
+
