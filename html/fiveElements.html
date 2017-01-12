@@ -4,7 +4,7 @@
 <title>我的绚丽HTML5动画DEMO演示</title>
 </head>
 <body>
-    <div id="main" style="height:400px;"></div>
+    <div id="main" style="height:600px;width:600px;"></div>
     
     <script src="./js/echarts.js"></script>
     <script type="text/javascript">
@@ -14,15 +14,27 @@
             }
         });
         
-        var baseX = 0;
-        var baseY = 0;
-        var r = 50;
+        var height = 600;
+        var width = 600;
+        
+        var baseX = width/2;
+        var baseY = height/2;
+        //var baseX = 0;
+        //var baseY = 0;
+        
+        var radius = 120;
         var sin72 = 0.95105651629515357211643933337938;
         var cos72 = 0.30901699437494742410229341718282;
         var sin54 = 0.80901699437494742410229341718282;
         var cos54 = 0.58778525229247312916870595463907;
-        
-        
+        var element_points = [];
+        element_points['中'] = {x: baseX,                      y: baseY,                       };
+        element_points['火'] = {x: baseX,                      y: baseY - radius,              };
+        element_points['土'] = {x: baseX - (radius * sin72),   y: baseY - (radius * cos72),    };
+        element_points['金'] = {x: baseX - (radius * cos54),   y: baseY + (radius * sin54),    };
+        element_points['水'] = {x: baseX + (radius * cos54),   y: baseY + (radius * sin54),    };
+        element_points['木'] = {x: baseX + (radius * sin72),   y: baseY - (radius * cos72),    };
+                        
         require(
             [
                 'echarts',
@@ -50,17 +62,18 @@
     legend: {
         orient: 'vertical',
         x:'left',
-        data:['生', '上海 Top10', '广州 Top10'],
+        data:['生', '克', '侮'],
         selectedMode: 'single',
         selected:{
             '生' : true,
-            '上海 Top10' : false,
-            '广州 Top10' : false
+            '克' : false,
+            '侮' : false
         },
         textStyle : {
             color: '#fff'
         }
     },
+    /*
     toolbox: {
         show : true,
         orient : 'vertical',
@@ -73,7 +86,10 @@
             saveAsImage : {show: true}
         }
     },
+    */
+    
     dataRange: {
+        show : false,
         min : 0,
         max : 100,
         //calculable : true,
@@ -93,12 +109,17 @@
     },
     series : [
         {
-            name: '全国',
+            name: '底图',
             type: 'map',
+            //type: 'value',
+            clickable:true,
             //selectedMode:'multiple',
-            roam: true,
+            roam: false,
             hoverable: false,
-            mapLocation: {x:'center',y:'center',},
+            //mapLocation: {x:'center',y:'center',},
+            //mapLocation: {x:'center',y:'center',width:0, height:0,},
+            //mapLocation: {x:'left',y:'left',width:600, height:400,},
+            
             //mapType: 'china',
             mapType: 'none',
             itemStyle:{
@@ -107,30 +128,20 @@
                     borderWidth:0.5,
                     areaStyle:{
                         color: '#1b1b1b'
-                    }
-                }
-            },
-            data:[],
-            markLine : {
-                smooth:true,
-                symbol: ['none', 'circle'],  
-                symbolSize : 1,
-                itemStyle : {
-                    normal: {
-                        color:'#fff',
-                        borderWidth:1,
-                        borderColor:'rgba(30,144,255,0.5)'
-                    }
+                    },
+                    lineStyle:{
+                        color:'red',
+                        type:'dotted',
+                    },
+                    
+                },
+                emphasis: {
                 },
                 
-                data : [
-                    [{name:'火'},{name:'土'}],
-                    [{name:'土'},{name:'金'}],
-                    [{name:'金'},{name:'水'}],
-                    [{name:'水'},{name:'木'}],
-                    [{name:'木'},{name:'火'}],
-                ],
             },
+            data:[],
+            
+            /*
             geoCoord: {
                 //'北京': [116.4551,40.2539],
                 //'上海': [121.4648,31.2891],
@@ -138,18 +149,23 @@
                 //'拉萨': [91.1865,30.1465],
                 //'乌鲁木齐': [87.9236,43.5883],
                 
-                '中': [baseX,baseY],
-                '火': [baseX,-r],
-                '土': [baseX-r*sin72,baseY-r*cos72],
-                '金': [baseX-r*cos54,baseY+r*sin54],
-                '水': [baseX+r*cos54,baseY+r*sin54],
-                '木': [baseX+r*sin72,baseY-r*cos72],
+                '中': [element_points['中'].x, element_points['中'].y, ],
+                '火': [element_points['火'].x, element_points['火'].y, ],
+                '土': [element_points['土'].x, element_points['土'].y, ],
+                '金': [element_points['金'].x, element_points['金'].y, ],
+                '水': [element_points['水'].x, element_points['水'].y, ],
+                '木': [element_points['木'].x, element_points['木'].y, ],
             },
+            */
+            
+            
             markPoint : {
+                //image://../asset/ico/favicon.png,
                 symbol:'emptyCircle',
                 symbolSize : function (v){
                     return 10 + v/10
                 },
+                //large: true,
                 effect : {
                     show: true,
                     shadowBlur : 0,
@@ -172,16 +188,63 @@
                     }
                 },
                 data : [
-
-                    {name:'中',  value:10},
+                    /*
+                    {name:'中', smoothness:0,  value:10, },
+                    {name:'火', smoothness:0,  value:90, },
+                    {name:'土', smoothness:0,  value:90, },
+                    {name:'金', smoothness:0,  value:90, },
+                    {name:'水', smoothness:0,  value:90, },
+                    {name:'木', smoothness:0,  value:90, },
+                    */
                     
-                    {name:'火', smoothness:0,  value:90},
-                    {name:'土', smoothness:0,  value:90},
-                    {name:'金', smoothness:0,  value:90},
-                    {name:'水', smoothness:0,  value:90},
-                    {name:'木', smoothness:0,  value:90},
+                    //{name:'abc', smoothness:0,  value:10, x: -100, y: -100, },
+                    
+                    {name:'中', smoothness:0,  value:10, x: element_points['中'].x, y: element_points['中'].y, },
+                    {name:'火', smoothness:0,  value:90, x: element_points['火'].x, y: element_points['火'].y, },
+                    {name:'土', smoothness:0,  value:90, x: element_points['土'].x, y: element_points['土'].y, },
+                    {name:'金', smoothness:0,  value:90, x: element_points['金'].x, y: element_points['金'].y, },
+                    {name:'水', smoothness:0,  value:90, x: element_points['水'].x, y: element_points['水'].y, },
+                    {name:'木', smoothness:0,  value:90, x: element_points['木'].x, y: element_points['木'].y, },
+                    
+                    
+                    /*
+                    {name:'中', smoothness:0,  value:10, xAxis: element_points['中'].x, yAxis: element_points['中'].y, },
+                    {name:'火', smoothness:0,  value:90, xAxis: element_points['火'].x, yAxis: element_points['火'].y, },
+                    {name:'土', smoothness:0,  value:90, xAxis: element_points['土'].x, yAxis: element_points['土'].y, },
+                    {name:'金', smoothness:0,  value:90, xAxis: element_points['金'].x, yAxis: element_points['金'].y, },
+                    {name:'水', smoothness:0,  value:90, xAxis: element_points['水'].x, yAxis: element_points['水'].y, },
+                    {name:'木', smoothness:0,  value:90, xAxis: element_points['木'].x, yAxis: element_points['木'].y, },
+                    */
+                    
                 ],            
                               
+            },
+            markLine : {
+                smooth:true,
+                symbol: ['none', 'circle'],  
+                symbolSize : 1,
+                itemStyle : {
+                    normal: {
+                        color:'#fff',
+                        borderWidth:1,
+                        borderColor:'rgba(30,144,255,0.5)'
+                    }
+                },
+                
+                data : [
+                    /*
+                    [{name:'火'},{name:'土'}],
+                    [{name:'土'},{name:'金'}],
+                    [{name:'金'},{name:'水'}],
+                    [{name:'水'},{name:'木'}],
+                    [{name:'木'},{name:'火'}],
+                    */
+                    [{name:'火', value: 90, x: element_points['火'].x, y: element_points['火'].y, }, {name:'土'}],
+                    [{name:'土'},{name:'金'}],
+                    [{name:'金'},{name:'水'}],
+                    [{name:'水'},{name:'木'}],
+                    [{name:'木'},{name:'火'}],
+                ],
             },
         },
         
@@ -230,6 +293,7 @@
                     [{name:'木', smoothness:0.3}, {name:'火', value:10}],
                 ]
             },
+            /*
             markPoint : {
                 symbol:'emptyCircle',
                 symbolSize : function (v){
@@ -265,6 +329,7 @@
                 ],
                 
             },
+            */
             
         },
         /*
