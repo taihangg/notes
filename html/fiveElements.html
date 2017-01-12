@@ -1,0 +1,415 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>我的绚丽HTML5动画DEMO演示</title>
+</head>
+<body>
+    <div id="main" style="height:400px;"></div>
+    
+    <script src="./js/echarts.js"></script>
+    <script type="text/javascript">
+        require.config({
+            paths: {
+                echarts: './js'
+            }
+        });
+        
+        var baseX = 0;
+        var baseY = 0;
+        var r = 50;
+        var sin72 = 0.95105651629515357211643933337938;
+        var cos72 = 0.30901699437494742410229341718282;
+        var sin54 = 0.80901699437494742410229341718282;
+        var cos54 = 0.58778525229247312916870595463907;
+        
+        
+        require(
+            [
+                'echarts',
+                //'echarts/chart/line',   // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
+                //'echarts/chart/bar',
+                'echarts/chart/map'
+            ],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('main'));
+                var option = {
+    backgroundColor: '#1b1b1b',
+    color: ['gold','aqua','lime'],
+    title : {
+        text: '模拟迁徙',
+        subtext:'数据纯属虚构',
+        x:'center',
+        textStyle : {
+            color: '#fff'
+        }
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: '{b}'
+    },
+    legend: {
+        orient: 'vertical',
+        x:'left',
+        data:['生', '上海 Top10', '广州 Top10'],
+        selectedMode: 'single',
+        selected:{
+            '生' : true,
+            '上海 Top10' : false,
+            '广州 Top10' : false
+        },
+        textStyle : {
+            color: '#fff'
+        }
+    },
+    toolbox: {
+        show : true,
+        orient : 'vertical',
+        x: 'right',
+        y: 'center',
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    dataRange: {
+        min : 0,
+        max : 100,
+        //calculable : true,
+        //color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
+        textStyle:{
+            color:'#fff'
+        },
+        selectedMode:'multiple',
+        splitList: [
+            {start: 80, end: 100, label: '火', color: 'red'},
+            {start: 60, end:  80, label: '土', color: '#A0522D'},
+            {start: 40, end:  60, label: '金', color: 'gold'},
+            {start: 20, end:  40, label: '水', color: 'black'},
+            {start:  0, end:  20, label: '木', color: 'green'},
+        ],
+        
+    },
+    series : [
+        {
+            name: '全国',
+            type: 'map',
+            //selectedMode:'multiple',
+            roam: true,
+            hoverable: false,
+            mapLocation: {x:'center',y:'center',},
+            //mapType: 'china',
+            mapType: 'none',
+            itemStyle:{
+                normal:{
+                    borderColor:'rgba(100,149,237,1)',
+                    borderWidth:0.5,
+                    areaStyle:{
+                        color: '#1b1b1b'
+                    }
+                }
+            },
+            data:[],
+            markLine : {
+                smooth:true,
+                symbol: ['none', 'circle'],  
+                symbolSize : 1,
+                itemStyle : {
+                    normal: {
+                        color:'#fff',
+                        borderWidth:1,
+                        borderColor:'rgba(30,144,255,0.5)'
+                    }
+                },
+                
+                data : [
+                    [{name:'火'},{name:'土'}],
+                    [{name:'土'},{name:'金'}],
+                    [{name:'金'},{name:'水'}],
+                    [{name:'水'},{name:'木'}],
+                    [{name:'木'},{name:'火'}],
+                ],
+            },
+            geoCoord: {
+                //'北京': [116.4551,40.2539],
+                //'上海': [121.4648,31.2891],
+                //'广州': [113.5107,23.2196],
+                //'拉萨': [91.1865,30.1465],
+                //'乌鲁木齐': [87.9236,43.5883],
+                
+                '中': [baseX,baseY],
+                '火': [baseX,-r],
+                '土': [baseX-r*sin72,baseY-r*cos72],
+                '金': [baseX-r*cos54,baseY+r*sin54],
+                '水': [baseX+r*cos54,baseY+r*sin54],
+                '木': [baseX+r*sin72,baseY-r*cos72],
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    return 10 + v/10
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0,
+                    //type: 'bounce',
+                    loop: true,
+                    //color:function(params){alert(params);return "yellow";},
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false,},
+                        color: function(params) {
+                                        var index = params.dataIndex;
+                                        var colorList = ['#A0522D','red','#A0522D','gold','black','green',];
+                                        var newColor=colorList[index];
+                                        return newColor;
+                                        },
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : [
+
+                    {name:'中',  value:10},
+                    
+                    {name:'火', smoothness:0,  value:90},
+                    {name:'土', smoothness:0,  value:90},
+                    {name:'金', smoothness:0,  value:90},
+                    {name:'水', smoothness:0,  value:90},
+                    {name:'木', smoothness:0,  value:90},
+                ],            
+                              
+            },
+        },
+        
+        {
+            name: '生',
+            type: 'map',
+            //selectedMode:'multiple',
+            //mapType: 'china',
+            mapType: 'none',
+            data:[],
+            
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    shadowBlur: 10,
+                    color: '#fff',
+                    /*
+                    color: function(params) {
+                        var index = params.dataIndex;
+                        var colorList = ['red','#A0522D','gold','black','green',];
+                        var newColor=colorList[index%colorList.length];
+                        return newColor;
+                    },
+                    */
+                    
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:3,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10,
+                        }
+                    }
+                },
+                data : [
+                    [{name:'火', smoothness:0.3}, {name:'土', value:90}],
+                    [{name:'火', smoothness:0.4}, {name:'土', value:90}],
+                                 
+                    [{name:'土', smoothness:0.3}, {name:'金', value:70}],
+                    [{name:'金', smoothness:0.3}, {name:'水', value:50}],
+                    [{name:'水', smoothness:0.3}, {name:'木', value:30}],
+                    [{name:'木', smoothness:0.3}, {name:'火', value:10}],
+                ]
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    return 10 + v/10
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0,
+                    //type: 'bounce',
+                    loop: true,
+                    //color:function(params){alert(params);return "yellow";},
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false,},
+                        color: function(params) {
+                                        var index = params.dataIndex;
+                                        var colorList = ['red','#A0522D','gold','black','green',];
+                                        var newColor=colorList[index%colorList.length];
+                                        return newColor;
+                                        },
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : [
+                    {name:'北京',         value:90},
+                    {name:'上海',         value:90},
+                    {name:'广州',         value:90},
+                    {name:'拉萨',         value:90},
+                    {name:'乌鲁木齐',     value:90},
+                ],
+                
+            },
+            
+        },
+        /*
+        {
+            name: '上海 Top10',
+            type: 'map',
+            mapType: 'china',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : [
+                    [{name:'上海'},{name:'包头',value:95}],
+                    [{name:'上海'},{name:'昆明',value:90}],
+                    [{name:'上海'},{name:'广州',value:80}],
+                    [{name:'上海'},{name:'郑州',value:70}],
+                    [{name:'上海'},{name:'长春',value:60}],
+                    [{name:'上海'},{name:'重庆',value:50}],
+                    [{name:'上海'},{name:'长沙',value:40}],
+                    [{name:'上海'},{name:'北京',value:30}],
+                    [{name:'上海'},{name:'丹东',value:20}],
+                    [{name:'上海'},{name:'大连',value:10}]
+                ]
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    return 10 + v/10
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : [
+                    {name:'包头',value:95},
+                    {name:'昆明',value:90},
+                    {name:'广州',value:80},
+                    {name:'郑州',value:70},
+                    {name:'长春',value:60},
+                    {name:'重庆',value:50},
+                    {name:'长沙',value:40},
+                    {name:'北京',value:30},
+                    {name:'丹东',value:20},
+                    {name:'大连',value:10}
+                ]
+            }
+        },
+        {
+            name: '广州 Top10',
+            type: 'map',
+            mapType: 'china',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : [
+                    [{name:'广州'},{name:'福州',value:95}],
+                    [{name:'广州'},{name:'太原',value:90}],
+                    [{name:'广州'},{name:'长春',value:80}],
+                    [{name:'广州'},{name:'重庆',value:70}],
+                    [{name:'广州'},{name:'西安',value:60}],
+                    [{name:'广州'},{name:'成都',value:50}],
+                    [{name:'广州'},{name:'常州',value:40}],
+                    [{name:'广州'},{name:'北京',value:30}],
+                    [{name:'广州'},{name:'北海',value:20}],
+                    [{name:'广州'},{name:'海口',value:10}]
+                ]
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    return 10 + v/10
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : [
+                    {name:'福州',value:95},
+                    {name:'太原',value:90},
+                    {name:'长春',value:80},
+                    {name:'重庆',value:70},
+                    {name:'西安',value:60},
+                    {name:'成都',value:50},
+                    {name:'常州',value:40},
+                    {name:'北京',value:30},
+                    {name:'北海',value:20},
+                    {name:'海口',value:10}
+                ]
+            }
+        }
+        */
+    ]
+};
+            
+                
+                myChart.setOption(option);
+            }
+        );
+    </script>
+</body>
+</html>
