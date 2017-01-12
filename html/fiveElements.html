@@ -29,11 +29,11 @@
         var cos54 = 0.58778525229247312916870595463907;
         var element_points = [];
         element_points['中'] = {x: baseX,                      y: baseY,                       };
-        element_points['火'] = {x: baseX,                      y: baseY - radius,              };
-        element_points['土'] = {x: baseX - (radius * sin72),   y: baseY - (radius * cos72),    };
-        element_points['金'] = {x: baseX - (radius * cos54),   y: baseY + (radius * sin54),    };
-        element_points['水'] = {x: baseX + (radius * cos54),   y: baseY + (radius * sin54),    };
-        element_points['木'] = {x: baseX + (radius * sin72),   y: baseY - (radius * cos72),    };
+        element_points['火'] = {x: baseX,                      y: baseY + radius,              };
+        element_points['土'] = {x: baseX + (radius * sin72),   y: baseY + (radius * cos72),    };
+        element_points['金'] = {x: baseX + (radius * cos54),   y: baseY - (radius * sin54),    };
+        element_points['水'] = {x: baseX - (radius * cos54),   y: baseY - (radius * sin54),    };
+        element_points['木'] = {x: baseX - (radius * sin72),   y: baseY + (radius * cos72),    };
                         
         require(
             [
@@ -73,20 +73,6 @@
             color: '#fff'
         }
     },
-    /*
-    toolbox: {
-        show : true,
-        orient : 'vertical',
-        x: 'right',
-        y: 'center',
-        feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-            restore : {show: true},
-            saveAsImage : {show: true}
-        }
-    },
-    */
     
     dataRange: {
         show : false,
@@ -207,14 +193,14 @@
                     {name:'木', smoothness:0,  value:90, x: element_points['木'].x, y: element_points['木'].y, },
                     
                     
-                    /*
-                    {name:'中', smoothness:0,  value:10, xAxis: element_points['中'].x, yAxis: element_points['中'].y, },
-                    {name:'火', smoothness:0,  value:90, xAxis: element_points['火'].x, yAxis: element_points['火'].y, },
-                    {name:'土', smoothness:0,  value:90, xAxis: element_points['土'].x, yAxis: element_points['土'].y, },
-                    {name:'金', smoothness:0,  value:90, xAxis: element_points['金'].x, yAxis: element_points['金'].y, },
-                    {name:'水', smoothness:0,  value:90, xAxis: element_points['水'].x, yAxis: element_points['水'].y, },
-                    {name:'木', smoothness:0,  value:90, xAxis: element_points['木'].x, yAxis: element_points['木'].y, },
-                    */
+                    
+                    //{name:'中', smoothness:0,  value:10, xAxis: element_points['中'].x, yAxis: element_points['中'].y, },
+                    //{name:'火', smoothness:0,  value:90, xAxis: element_points['火'].x, yAxis: element_points['火'].y, },
+                    //{name:'土', smoothness:0,  value:90, xAxis: element_points['土'].x, yAxis: element_points['土'].y, },
+                    //{name:'金', smoothness:0,  value:90, xAxis: element_points['金'].x, yAxis: element_points['金'].y, },
+                    //{name:'水', smoothness:0,  value:90, xAxis: element_points['水'].x, yAxis: element_points['水'].y, },
+                    //{name:'木', smoothness:0,  value:90, xAxis: element_points['木'].x, yAxis: element_points['木'].y, },
+                    
                     
                 ],            
                               
@@ -239,7 +225,7 @@
                     [{name:'水'},{name:'木'}],
                     [{name:'木'},{name:'火'}],
                     */
-                    [{name:'火', value: 90, x: element_points['火'].x, y: element_points['火'].y, }, {name:'土'}],
+                    [{name:'火', value: 90, x: element_points['火'].x, y: element_points['火'].y, }, {name:'土', value: 90, x: element_points['土'].x, y: element_points['土'].y, }],
                     [{name:'土'},{name:'金'}],
                     [{name:'金'},{name:'水'}],
                     [{name:'水'},{name:'木'}],
