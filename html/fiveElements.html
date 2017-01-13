@@ -27,14 +27,26 @@
         var cos72 = 0.30901699437494742410229341718282;
         var sin54 = 0.80901699437494742410229341718282;
         var cos54 = 0.58778525229247312916870595463907;
+
         var points = [];
-        points['中'] = {x: baseX,                      y: baseY,                       };
         points['火'] = {x: baseX,                      y: baseY - radius,              };
         points['土'] = {x: baseX + (radius * sin72),   y: baseY - (radius * cos72),    };
         points['金'] = {x: baseX + (radius * cos54),   y: baseY + (radius * sin54),    };
         points['水'] = {x: baseX - (radius * cos54),   y: baseY + (radius * sin54),    };
         points['木'] = {x: baseX - (radius * sin72),   y: baseY - (radius * cos72),    };
+        points['中'] = {x: baseX,                      y: baseY,                       };
         
+        var energyInit = 3;
+        var energy = [];
+        energy['火'] = energyInit;
+        energy['土'] = energyInit;
+        energy['金'] = energyInit;
+        energy['水'] = energyInit;
+        energy['木'] = energyInit;
+        var elementName = ['火', '土', '金', '水', '木', ];
+        
+        
+
         /*
         iconLibrary: {  
             mark: _iconMark,  
@@ -102,8 +114,12 @@
                         //borderColor:'#ccc',
                         itemSize:20,
                         //color: ['red','#A0522D','gold','black','green',],
-                        color: ['red','red','#A0522D','gold','black','green',],
+                        //color: ['red','red','#A0522D','gold','black','green',],
                         //effectiveColor : 'gold',
+                        textStyle:{
+                            fontStyle:'normal',
+                            fontWeight:'bolder',
+                        },
                         feature : {  
                             show : true, 
                             //mark : {show: true},  
@@ -153,7 +169,7 @@
                                 onclick : function (){  
                                     //loadDrugs();  
                                     alert('3');
-                                }  
+                                },  
                             },
                             huo_add : {  
                                 show : true,  
@@ -402,36 +418,14 @@
                                     }
                                 },
                                 data : [
-                                    /*
-                                    {name:'中', smoothness:0,  value:10, },
-                                    {name:'火', smoothness:0,  value:90, },
-                                    {name:'土', smoothness:0,  value:90, },
-                                    {name:'金', smoothness:0,  value:90, },
-                                    {name:'水', smoothness:0,  value:90, },
-                                    {name:'木', smoothness:0,  value:90, },
-                                    */
-                                    
-                                    //{name:'abc', smoothness:0,  value:10, x: -100, y: -100, },
-                                    
-                                    
-                                    {name:'火', smoothness:0,  value: 90, x: points['火'].x, y: points['火'].y, },
-                                    {name:'土', smoothness:0,  value: 90, x: points['土'].x, y: points['土'].y, },
-                                    {name:'金', smoothness:0,  value: 90, x: points['金'].x, y: points['金'].y, },
-                                    {name:'水', smoothness:0,  value: 90, x: points['水'].x, y: points['水'].y, },
-                                    {name:'木', smoothness:0,  value: 90, x: points['木'].x, y: points['木'].y, },
+                                    {name:'火', x: points['火'].x, y: points['火'].y, value: 90, },
+                                    {name:'土', x: points['土'].x, y: points['土'].y, value: 90, },
+                                    {name:'金', x: points['金'].x, y: points['金'].y, value: 90, },
+                                    {name:'水', x: points['水'].x, y: points['水'].y, value: 90, },
+                                    {name:'木', x: points['木'].x, y: points['木'].y, value: 90, },
                                     //{name:'中', smoothness:0,  value:900, x: points['中'].x, y: points['中'].y, },
                                     
                                     //{name:'abc', smoothness:0,  value:300, x: 300, y: 300, },
-                                    
-                                    
-                                    
-                                    //{name:'中', smoothness:0,  value:10, xAxis: points['中'].x, yAxis: points['中'].y, },
-                                    //{name:'火', smoothness:0,  value:90, xAxis: points['火'].x, yAxis: points['火'].y, },
-                                    //{name:'土', smoothness:0,  value:90, xAxis: points['土'].x, yAxis: points['土'].y, },
-                                    //{name:'金', smoothness:0,  value:90, xAxis: points['金'].x, yAxis: points['金'].y, },
-                                    //{name:'水', smoothness:0,  value:90, xAxis: points['水'].x, yAxis: points['水'].y, },
-                                    //{name:'木', smoothness:0,  value:90, xAxis: points['木'].x, yAxis: points['木'].y, },
-                                    
                                     
                                 ],            
                                               
@@ -504,16 +498,18 @@
                                         lineStyle: {
                                             type: 'solid',
                                             shadowBlur: 10,
-                                        }
-                                    }
+                                        },
+                                    },
                                 },
                                 data : [
+                                    /*
                                     [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
                                     [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 70, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
                                     [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
                                     [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 30, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
                                     [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 10, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
-                                ]
+                                    */
+                                ],
                             },
                         },
                         
@@ -560,17 +556,61 @@
                                     }
                                 },
                                 data : [
+                                    /*
                                     [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
                                     [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 70, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
                                     [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
                                     [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 30, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
                                     [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 10, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
-                                ]
+                                    */
+                                ],
                             },
                         },
-                    ]
+                    ],
                 };
-            
+                
+                var smoothnessInit = 0.2;
+                var smoothnessInc  = 0.05;
+                //var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
+                
+                function setMarkLine(markLine, srcElem, dstElem, smoothness, value){
+                    
+                    markLine[0].name = srcElem;
+                    markLine[0].x = points[srcElem].x;
+                    markLine[0].y = points[srcElem].y;
+                    markLine[0].smoothness = smoothness;
+                    markLine[0].value = value;
+                    
+                    markLine[1].name = dstElem;
+                    markLine[1].x = points[dstElem].x;
+                    markLine[1].y = points[dstElem].y;
+                    
+                    //alert(smoothness);
+                }
+                //var deepCopy= function(source) { 
+                //    var result={};
+                //    for (var key in source) {
+                //        result[key] = typeof source[key]===’object’? deepCoyp(source[key]): source[key];
+                //   } 
+                //   return result; 
+                //}
+                
+                function addMarkLines(data, offset){
+                    
+                    //var markLineTmp = {data:[],};
+                    
+                    //for (var i = 0; i < energyInit; ++i){
+                    for (var i = 0; i < 1; ++i){
+                        for (var j = 0; j < 5; ++j){
+                            var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
+                            setMarkLine(marklineBase, elementName[j], elementName[(j+offset)%5], smoothnessInit + smoothnessInc*i, 90 - j*20);
+                            data.push(marklineBase);
+                        }
+                    }
+                }
+                
+                addMarkLines(option.series[0].markLine.data, 1);
+                //addMarkLines(2, 2);
                 
                 myChart.setOption(option);
                 /*
