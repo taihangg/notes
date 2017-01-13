@@ -34,6 +34,38 @@
         points['金'] = {x: baseX + (radius * cos54),   y: baseY + (radius * sin54),    };
         points['水'] = {x: baseX - (radius * cos54),   y: baseY + (radius * sin54),    };
         points['木'] = {x: baseX - (radius * sin72),   y: baseY - (radius * cos72),    };
+        
+        /*
+        iconLibrary: {  
+            mark: _iconMark,  
+            markUndo: _iconMarkUndo,  
+            markClear: _iconMarkClear,  
+            dataZoom: _iconDataZoom,  
+            dataZoomReset: _iconDataZoomReset,  
+            restore: _iconRestore,  
+            lineChart: _iconLineChart,  
+            barChart: _iconBarChart,  
+            pieChart: _iconPieChart,  
+            funnelChart: _iconFunnelChart,  
+            forceChart: _iconForceChart,  
+            chordChart: _iconChordChart,  
+            stackChart: _iconStackChart,  
+            tiledChart: _iconTiledChart,  
+            dataView: _iconDataView,  
+            saveAsImage: _iconSave,  
+            cross: _iconCross,  
+            circle: _iconCircle,  
+            rectangle: _iconRectangle,  
+            triangle: _iconTriangle,  
+            diamond: _iconDiamond,  
+            arrow: _iconArrow,  
+            star: _iconStar,  
+            heart: _iconHeart,  
+            droplet: _iconDroplet,  
+            pin: _iconPin,  
+            image: _iconImage  
+        };
+        */
                         
         require(
             [
@@ -45,333 +77,499 @@
             function (ec) {
                 var myChart = ec.init(document.getElementById('main'));
                 var option = {
-    backgroundColor: '#1b1b1b',
-    color: ['gold','aqua','lime'],
-    title : {
-        text: '五行生克',
-        subtext:'数据纯属虚构 ^_^',
-        x:'center',
-        textStyle : {
-            color: '#fff'
-        }
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: '{b}'
-    },
-    
-    toolbox: {  
-        show : true,  
-        feature : {  
-            //mark : {show: true},  
-            dataView : {show: true, readOnly: false},  
-            magicType : {show: true, type: ['line', 'bar']},  
-            restore : {show: true},  
-            myButton1:{//自定义按钮 danielinbiti,这里增加，selfbuttons可以随便取名字    
-                show:true,//是否显示    
-                title:'自定义', //鼠标移动上去显示的文字    
-                icon:'mark', //图标    
-                option:{},    
-                onclick:function(option1) {//点击事件,这里的option1是chart的option信息    
-                     alert('1');//这里可以加入自己的处理代码，切换不同的图形    
-                },
-            },  
-            
-            myButton2:{//自定义按钮 danielinbiti,这里增加，selfbuttons可以随便取名字    
-                show:true,//是否显示    
-                title:'自定义', //鼠标移动上去显示的文字    
-                icon:'mark', //图标    
-                option:{},
-                onclick:function(option2) {//点击事件,这里的option1是chart的option信息    
-                     alert('2');//这里可以加入自己的处理代码，切换不同的图形    
-                },
-            },  
-            saveAsImage : {show: true},
-        }  
-    },
-    
-    legend: {
-        orient: 'vertical',
-        x:'left',
-        data:['生', '克', '侮'],
-        selectedMode: 'multiple',
-        selected:{
-            '生' : true,
-            '克' : false,
-            '侮' : false
-        },
-        textStyle : {
-            color: '#fff'
-        }
-    },
-    
-    dataRange: {
-        show : false,
-        min : 0,
-        max : 100,
-        //calculable : true,
-        //color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
-        textStyle:{
-            color:'#fff'
-        },
-        selectedMode:'multiple',
-        splitList: [
-            {start: 80, end: 100, label: '火', color: 'red'},
-            {start: 60, end:  80, label: '土', color: '#A0522D'},
-            {start: 40, end:  60, label: '金', color: 'gold'},
-            {start: 20, end:  40, label: '水', color: 'black'},
-            {start:  0, end:  20, label: '木', color: 'green'},
-        ],
-    },
-    
-    series : [
-        {
-            name: '底图',
-            type: 'map',
-            //type: 'value',
-            clickable:true,
-            //selectedMode:'multiple',
-            roam: false,
-            hoverable: false,
-            //mapLocation: {x:'center',y:'center',},
-            //mapLocation: {x:'center',y:'center',width:0, height:0,},
-            //mapLocation: {x:'left',y:'left',width:600, height:400,},
-            
-            //mapType: 'china',
-            mapType: 'none',
-            itemStyle:{
-                normal:{
-                    borderColor:'rgba(100,149,237,1)',
-                    borderWidth:0.5,
-                    areaStyle:{
-                        color: '#1b1b1b'
-                    },
-                    lineStyle:{
-                        color:'red',
-                        type:'dotted',
+                    backgroundColor: '#1b1b1b',
+                    color: ['gold','aqua','lime'],
+                    title : {
+                        text: '五行生克',
+                        subtext:'数据纯属虚构 ^_^',
+                        x:'center',
+                        textStyle : {
+                            color: '#fff'
+                        }
                     },
                     
-                },
-                emphasis: {
-                },
-                
-            },
-            data:[],
-            
-            /*
-            geoCoord: {
-                //'北京': [116.4551,40.2539],
-                //'上海': [121.4648,31.2891],
-                //'广州': [113.5107,23.2196],
-                //'拉萨': [91.1865,30.1465],
-                //'乌鲁木齐': [87.9236,43.5883],
-                
-                '中': [points['中'].x, points['中'].y, ],
-                '火': [points['火'].x, points['火'].y, ],
-                '土': [points['土'].x, points['土'].y, ],
-                '金': [points['金'].x, points['金'].y, ],
-                '水': [points['水'].x, points['水'].y, ],
-                '木': [points['木'].x, points['木'].y, ],
-            },
-            */
-            
-            
-            markPoint : {
-                //image://../asset/ico/favicon.png,
-                symbol:'emptyCircle',
-                symbolSize : function (v){
-                    return 10 + v/10
-                },
-                //large: true,
-                effect : {
-                    show: true,
-                    shadowBlur : 0,
-                    //type: 'bounce',
-                    loop: true,
-                    //color:function(params){alert(params);return "yellow";},
-                },
-                itemStyle:{
-                    normal:{
-                        label:{show:false,},
-                        color: function(params) {
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: '{b}'
+                    },
+                    
+                    toolbox: {  
+                        show : true,  
+                        orient : 'vertical',
+                        x: 'left',
+                        y: 'center',
+                        //backgroundColor:'rgba(0,0,0,0)',
+                        //borderColor:'#ccc',
+                        itemSize:20,
+                        //color: ['red','#A0522D','gold','black','green',],
+                        color: ['red','red','#A0522D','gold','black','green',],
+                        //effectiveColor : 'gold',
+                        feature : {  
+                            show : true, 
+                            //mark : {show: true},  
+                            //dataView : {show: true, readOnly: false},  
+                            //magicType : {show: true, type: ['line', 'bar', 'mark', 'markUndo',]},  
+                            //magicType: {
+                            //    show : true,
+                            //    title : {
+                            //        line   : '火',
+                            //        bar    : '土',
+                            //        stack  : '金',
+                            //        tiled  : '水',
+                            //        force  : '木',
+                            //        
+                            //        //chord  : '金 +1',
+                            //        //chord  : '金 +1',
+                            //        //pie    : '水 -1',
+                            //        //pie    : '水 -1',
+                            //        //funnel : '水 +1',
+                            //        //funnel : '水 +1',
+                            //        //line   : '木 -1',
+                            //        //line   : '木 -1',
+                            //        
+                            //    },
+                            //    option : {
+                            //        // line: {...},
+                            //        // bar: {...},
+                            //        // stack: {...},
+                            //        // tiled: {...},
+                            //        // force: {...},
+                            //        // chord: {...},
+                            //        // pie: {...},
+                            //        // funnel: {...},
+                            //    },
+                            //    type : ['line', 'line','bar', 'bar', 'stack', 'stack', 'tiled', 'tiled', 'force', 'force', ],
+                            //    //type : ['line', 'bar', 'stack', 'tiled', 'force', 'chord', 'pie', 'funnel'],
+                            //    //type : ['line', 'line','bar', 'bar', 'stack', 'stack', 'tiled', 'tiled', 'force', 'force', 'chord', 'chord', 'pie', 'pie', 'funnel', 'funnel',],
+                            //},
+                            
+                            restore : {show: true},  
+                            
+                            huo_sub : {  
+                                show : true,  
+                                title : '火 -1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                color : 'red',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            huo_add : {  
+                                show : true,  
+                                title : '火 +1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                //icon : 'line',
+                                color : 'red',
+                                onclick : function (){
+                                    //alert('火 +1');
+                                    
+                                    var markLine = {
+                                        data : [
+                                            [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 100,}, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
+                                        ],
+                                    };
+                                    
+                                    var optionCopy = myChart.getOption();
+                                    var length = optionCopy.series[1].markLine.data.length;
+                                    for (var i=length-1;0<=i;i--)
+                                    {
+                                        if ('火' == optionCopy.series[1].markLine.data[i][0].name)
+                                        {
+                                            markLine.data[0][0].smoothness = optionCopy.series[1].markLine.data[i][0].smoothness + 0.05;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    //markLine.data.splice(1,markLine.data.length);
+                                    //var markLine2 = markLine;
+                                    //markLine2.data.splice(1,markLine2.data.length);
+
+                                    //markLine[0] = {{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.3, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, };
+                                    myChart.addMarkLine(1, markLine);
+                                },
+                            },
+                            
+                            tu_sub : {  
+                                show : true,  
+                                title : '土 -1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                color : '#A0522D',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            tu_add : {  
+                                show : true,  
+                                title : '土 +1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                //icon : 'line',
+                                color : '#A0522D',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            
+                            
+                            
+                            jin_sub : {  
+                                show : true,  
+                                title : '金 -1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                color : 'gold',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            jin_add : {  
+                                show : true,  
+                                title : '金 +1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                //icon : 'line',
+                                color : 'gold',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            
+                            shui_sub : {  
+                                show : true,  
+                                title : '水 -1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                color : 'black',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            shui_add : {  
+                                show : true,  
+                                title : '水 +1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                //icon : 'line',
+                                color : 'black',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            
+                            mu_sub : {  
+                                show : true,  
+                                title : '木 -1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                color : 'green',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            mu_add : {  
+                                show : true,  
+                                title : '木 +1',  
+                                //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
+                                //icon : 'line',
+                                color : 'green',
+                                onclick : function (){  
+                                    //loadDrugs();  
+                                    alert('3');
+                                }  
+                            },
+                            
+                            //saveAsImage : {show: true},
+                            
+                        }  
+                    },
+                    
+                    legend: {
+                        orient: 'vertical',
+                        x:'left',
+                        data:['生', '克', '侮'],
+                        selectedMode: 'multiple',
+                        selected:{
+                            '生' : true,
+                            '克' : false,
+                            '侮' : false
+                        },
+                        textStyle : {
+                            color: '#fff'
+                        }
+                    },
+                    
+                    dataRange: {
+                        show : false,
+                        min : 0,
+                        max : 100,
+                        //calculable : true,
+                        //color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
+                        textStyle:{
+                            color:'#fff'
+                        },
+                        selectedMode:'multiple',
+                        splitList: [
+                            {start: 80, end: 100, label: '火', color: 'red'},
+                            {start: 60, end:  80, label: '土', color: '#A0522D'},
+                            {start: 40, end:  60, label: '金', color: 'gold'},
+                            {start: 20, end:  40, label: '水', color: 'black'},
+                            {start:  0, end:  20, label: '木', color: 'green'},
+                        ],
+                    },
+                    
+                    series : [
+                        {
+                            name: '底图',
+                            type: 'map',
+                            //type: 'value',
+                            clickable:true,
+                            //selectedMode:'multiple',
+                            roam: false,
+                            hoverable: false,
+                            //mapLocation: {x:'center',y:'center',},
+                            //mapLocation: {x:'center',y:'center',width:0, height:0,},
+                            //mapLocation: {x:'left',y:'left',width:600, height:400,},
+                            
+                            //mapType: 'china',
+                            mapType: 'none',
+                            itemStyle:{
+                                normal:{
+                                    borderColor:'rgba(100,149,237,1)',
+                                    borderWidth:0.5,
+                                    areaStyle:{
+                                        color: '#1b1b1b'
+                                    },
+                                    lineStyle:{
+                                        color:'red',
+                                        type:'dotted',
+                                    },
+                                    
+                                },
+                                emphasis: {
+                                },
+                                
+                            },
+                            data:[],
+                            
+                            /*
+                            geoCoord: {
+                                //'北京': [116.4551,40.2539],
+                                //'上海': [121.4648,31.2891],
+                                //'广州': [113.5107,23.2196],
+                                //'拉萨': [91.1865,30.1465],
+                                //'乌鲁木齐': [87.9236,43.5883],
+                                
+                                '中': [points['中'].x, points['中'].y, ],
+                                '火': [points['火'].x, points['火'].y, ],
+                                '土': [points['土'].x, points['土'].y, ],
+                                '金': [points['金'].x, points['金'].y, ],
+                                '水': [points['水'].x, points['水'].y, ],
+                                '木': [points['木'].x, points['木'].y, ],
+                            },
+                            */
+                            
+                            
+                            markPoint : {
+                                //image://../asset/ico/favicon.png,
+                                symbol:'emptyCircle',
+                                symbolSize : function (v){
+                                    return 10 + v/10
+                                },
+                                //large: true,
+                                effect : {
+                                    show: true,
+                                    shadowBlur : 0,
+                                    //type: 'bounce',
+                                    loop: true,
+                                    //color:function(params){alert(params);return "yellow";},
+                                },
+                                itemStyle:{
+                                    normal:{
+                                        label:{show:false,},
+                                        
+                                        color: function(params) {
+                                                        var index = params.dataIndex;
+                                                        var colorList = ['red','#A0522D','gold','black','green','#A0522D',];
+                                                        var newColor=colorList[index];
+                                                        return newColor;
+                                                        },
+                                                        
+                                    },
+                                    emphasis: {
+                                        label:{position:'top'}
+                                    }
+                                },
+                                data : [
+                                    /*
+                                    {name:'中', smoothness:0,  value:10, },
+                                    {name:'火', smoothness:0,  value:90, },
+                                    {name:'土', smoothness:0,  value:90, },
+                                    {name:'金', smoothness:0,  value:90, },
+                                    {name:'水', smoothness:0,  value:90, },
+                                    {name:'木', smoothness:0,  value:90, },
+                                    */
+                                    
+                                    //{name:'abc', smoothness:0,  value:10, x: -100, y: -100, },
+                                    
+                                    
+                                    {name:'火', smoothness:0,  value: 90, x: points['火'].x, y: points['火'].y, },
+                                    {name:'土', smoothness:0,  value: 90, x: points['土'].x, y: points['土'].y, },
+                                    {name:'金', smoothness:0,  value: 90, x: points['金'].x, y: points['金'].y, },
+                                    {name:'水', smoothness:0,  value: 90, x: points['水'].x, y: points['水'].y, },
+                                    {name:'木', smoothness:0,  value: 90, x: points['木'].x, y: points['木'].y, },
+                                    //{name:'中', smoothness:0,  value:900, x: points['中'].x, y: points['中'].y, },
+                                    
+                                    //{name:'abc', smoothness:0,  value:300, x: 300, y: 300, },
+                                    
+                                    
+                                    
+                                    //{name:'中', smoothness:0,  value:10, xAxis: points['中'].x, yAxis: points['中'].y, },
+                                    //{name:'火', smoothness:0,  value:90, xAxis: points['火'].x, yAxis: points['火'].y, },
+                                    //{name:'土', smoothness:0,  value:90, xAxis: points['土'].x, yAxis: points['土'].y, },
+                                    //{name:'金', smoothness:0,  value:90, xAxis: points['金'].x, yAxis: points['金'].y, },
+                                    //{name:'水', smoothness:0,  value:90, xAxis: points['水'].x, yAxis: points['水'].y, },
+                                    //{name:'木', smoothness:0,  value:90, xAxis: points['木'].x, yAxis: points['木'].y, },
+                                    
+                                    
+                                ],            
+                                              
+                            },
+                            markLine : {
+                                smooth:true,
+                                symbol: ['none', 'circle'],  
+                                symbolSize : 1,
+                                itemStyle : {
+                                    normal: {
+                                        color:'#fff',
+                                        borderWidth:1,
+                                        borderColor:'rgba(30,144,255,0.5)'
+                                    }
+                                },
+                                
+                                data : [
+                                    /*
+                                    [{name:'火'},{name:'土'}],
+                                    [{name:'土'},{name:'金'}],
+                                    [{name:'金'},{name:'水'}],
+                                    [{name:'水'},{name:'木'}],
+                                    [{name:'木'},{name:'火'}],
+                                    */
+                                    [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 100,}, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
+                                    [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 50, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
+                                    [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
+                                    [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 50, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
+                                    [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 50, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
+                                ],
+                            },
+                        },
+                        
+                        {
+                            name: '生',
+                            type: 'map',
+                            //selectedMode:'multiple',
+                            //mapType: 'china',
+                            mapType: 'none',
+                            data:[],
+                            
+                            markLine : {
+                                clickable:true,
+                                smooth:true,
+                                
+                                effect : {
+                                    show: true,
+                                    scaleSize: 1,
+                                    period: 30,
+                                    scaleSize : 1.5,
+                                    shadowBlur: 10,
+                                    //color: '#fff',
+                                    /*
+                                    color: function(params) {
                                         var index = params.dataIndex;
-                                        var colorList = ['#A0522D','red','#A0522D','gold','black','green',];
-                                        var newColor=colorList[index];
+                                        var colorList = ['red','#A0522D','gold','black','green',];
+                                        var newColor=colorList[index%colorList.length];
                                         return newColor;
-                                        },
-                    },
-                    emphasis: {
-                        label:{position:'top'}
-                    }
-                },
-                data : [
-                    /*
-                    {name:'中', smoothness:0,  value:10, },
-                    {name:'火', smoothness:0,  value:90, },
-                    {name:'土', smoothness:0,  value:90, },
-                    {name:'金', smoothness:0,  value:90, },
-                    {name:'水', smoothness:0,  value:90, },
-                    {name:'木', smoothness:0,  value:90, },
-                    */
-                    
-                    //{name:'abc', smoothness:0,  value:10, x: -100, y: -100, },
-                    
-                    //{name:'中', smoothness:0,  value:900, x: points['中'].x, y: points['中'].y, },
-                    {name:'火', smoothness:0,  value: 90, x: points['火'].x, y: points['火'].y, },
-                    {name:'土', smoothness:0,  value: 90, x: points['土'].x, y: points['土'].y, },
-                    {name:'金', smoothness:0,  value: 90, x: points['金'].x, y: points['金'].y, },
-                    {name:'水', smoothness:0,  value: 90, x: points['水'].x, y: points['水'].y, },
-                    {name:'木', smoothness:0,  value: 90, x: points['木'].x, y: points['木'].y, },
-                    
-                    //{name:'abc', smoothness:0,  value:300, x: 300, y: 300, },
-                    
-                    
-                    
-                    //{name:'中', smoothness:0,  value:10, xAxis: points['中'].x, yAxis: points['中'].y, },
-                    //{name:'火', smoothness:0,  value:90, xAxis: points['火'].x, yAxis: points['火'].y, },
-                    //{name:'土', smoothness:0,  value:90, xAxis: points['土'].x, yAxis: points['土'].y, },
-                    //{name:'金', smoothness:0,  value:90, xAxis: points['金'].x, yAxis: points['金'].y, },
-                    //{name:'水', smoothness:0,  value:90, xAxis: points['水'].x, yAxis: points['水'].y, },
-                    //{name:'木', smoothness:0,  value:90, xAxis: points['木'].x, yAxis: points['木'].y, },
-                    
-                    
-                ],            
-                              
-            },
-            markLine : {
-                smooth:true,
-                symbol: ['none', 'circle'],  
-                symbolSize : 1,
-                itemStyle : {
-                    normal: {
-                        color:'#fff',
-                        borderWidth:1,
-                        borderColor:'rgba(30,144,255,0.5)'
-                    }
-                },
-                
-                data : [
-                    /*
-                    [{name:'火'},{name:'土'}],
-                    [{name:'土'},{name:'金'}],
-                    [{name:'金'},{name:'水'}],
-                    [{name:'水'},{name:'木'}],
-                    [{name:'木'},{name:'火'}],
-                    */
-                    [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 100,}, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
-                    [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 50, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
-                    [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
-                    [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 50, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
-                    [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 50, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
-                ],
-            },
-        },
-        
-        {
-            name: '生',
-            type: 'map',
-            //selectedMode:'multiple',
-            //mapType: 'china',
-            mapType: 'none',
-            data:[],
-            
-            markLine : {
-                clickable:true,
-                smooth:true,
-                
-                effect : {
-                    show: true,
-                    scaleSize: 1,
-                    period: 30,
-                    scaleSize : 1.5,
-                    shadowBlur: 10,
-                    //color: '#fff',
-                    /*
-                    color: function(params) {
-                        var index = params.dataIndex;
-                        var colorList = ['red','#A0522D','gold','black','green',];
-                        var newColor=colorList[index%colorList.length];
-                        return newColor;
-                    },
-                    */
-                    
-                    //shadowColor : 'red',
-                    //shadowBlur : null,
-                    
-                    
-                },
-                itemStyle : {
-                    normal: {
-                        borderWidth:7,
-                        lineStyle: {
-                            type: 'solid',
-                            shadowBlur: 10,
-                        }
-                    }
-                },
-                data : [
-                    [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
-                    [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 70, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
-                    [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
-                    [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 30, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
-                    [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 10, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
-                ]
-            },
-        },
-        
-        {
-            name: '克',
-            type: 'map',
-            //selectedMode:'multiple',
-            //mapType: 'china',
-            mapType: 'none',
-            data:[],
-            
-            markLine : {
-                clickable:true,
-                smooth:true,
-                
-                effect : {
-                    show: true,
-                    scaleSize: 1,
-                    period: 30,
-                    scaleSize : 1.5,
-                    shadowBlur: 10,
-                    //color: '#fff',
-                    /*
-                    color: function(params) {
-                        var index = params.dataIndex;
-                        var colorList = ['red','#A0522D','gold','black','green',];
-                        var newColor=colorList[index%colorList.length];
-                        return newColor;
-                    },
-                    */
-                    
-                    //shadowColor : 'red',
-                    //shadowBlur : null,
-                    
-                    
-                },
-                itemStyle : {
-                    normal: {
-                        borderWidth:3,
-                        lineStyle: {
-                            type: 'solid',
-                            shadowBlur: 10,
-                        }
-                    }
-                },
-                data : [
-                    [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
-                    [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 70, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
-                    [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
-                    [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 30, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
-                    [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 10, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
-                ]
-            },
-        },
-    ]
-};
+                                    },
+                                    */
+                                    
+                                    //shadowColor : 'red',
+                                    //shadowBlur : null,
+                                    
+                                    
+                                },
+                                itemStyle : {
+                                    normal: {
+                                        borderWidth:3,
+                                        lineStyle: {
+                                            type: 'solid',
+                                            shadowBlur: 10,
+                                        }
+                                    }
+                                },
+                                data : [
+                                    [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
+                                    [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 70, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
+                                    [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
+                                    [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 30, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
+                                    [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 10, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
+                                ]
+                            },
+                        },
+                        
+                        {
+                            name: '克',
+                            type: 'map',
+                            //selectedMode:'multiple',
+                            //mapType: 'china',
+                            mapType: 'none',
+                            data:[],
+                            
+                            markLine : {
+                                clickable:true,
+                                smooth:true,
+                                
+                                effect : {
+                                    show: true,
+                                    scaleSize: 1,
+                                    period: 30,
+                                    scaleSize : 1.5,
+                                    shadowBlur: 10,
+                                    //color: '#fff',
+                                    /*
+                                    color: function(params) {
+                                        var index = params.dataIndex;
+                                        var colorList = ['red','#A0522D','gold','black','green',];
+                                        var newColor=colorList[index%colorList.length];
+                                        return newColor;
+                                    },
+                                    */
+                                    
+                                    //shadowColor : 'red',
+                                    //shadowBlur : null,
+                                    
+                                    
+                                },
+                                itemStyle : {
+                                    normal: {
+                                        borderWidth:3,
+                                        lineStyle: {
+                                            type: 'solid',
+                                            shadowBlur: 10,
+                                        }
+                                    }
+                                },
+                                data : [
+                                    [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ],
+                                    [{name:'土', x: points['土'].x, y: points['土'].y, smoothness:0.2, value: 70, }, {name:'水', x: points['水'].x, y: points['水'].y, }, ],
+                                    [{name:'金', x: points['金'].x, y: points['金'].y, smoothness:0.2, value: 50, }, {name:'木', x: points['木'].x, y: points['木'].y, }, ],
+                                    [{name:'水', x: points['水'].x, y: points['水'].y, smoothness:0.2, value: 30, }, {name:'火', x: points['火'].x, y: points['火'].y, }, ],
+                                    [{name:'木', x: points['木'].x, y: points['木'].y, smoothness:0.2, value: 10, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
+                                ]
+                            },
+                        },
+                    ]
+                };
             
                 
                 myChart.setOption(option);
