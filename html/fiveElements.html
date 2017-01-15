@@ -38,15 +38,67 @@
         
         var energyInit = 3;
         var energy = [];
-        energy['火'] = energyInit;
-        energy['土'] = energyInit;
-        energy['金'] = energyInit;
-        energy['水'] = energyInit;
-        energy['木'] = energyInit;
+        //energy['火'] = energyInit;
+        //energy['土'] = energyInit;
+        //energy['金'] = energyInit;
+        //energy['水'] = energyInit;
+        //energy['木'] = energyInit;
+        energy['火'] = 0;
+        energy['土'] = 0;
+        energy['金'] = 0;
+        energy['水'] = 0;
+        energy['木'] = 0;
+        
+        var energyChange = [];
+        energyChange['火'] = 1;
+        energyChange['土'] = 2;
+        energyChange['金'] = 3;
+        energyChange['水'] = 4;
+        energyChange['木'] = 5;
+        
         var elementName = ['火', '土', '金', '水', '木', ];
         
+        var marklineData = [];
+        marklineData[0] = [];
+        marklineData[1] = [];
+        marklineData[2] = [];
+        //marklineData[0] = new Array();
+        //marklineData[1] = new Array();
+        //marklineData[2] = new Array();
         
-
+        //alert(marklineData[1]);
+        
+        var smoothnessInit = 0.2;
+        var smoothnessInc   = 0.05;
+        var smoothnessInc1  = 0.05;
+        var smoothnessInc2  = 0.025;
+        //var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
+        
+        function setMarkLine(markLine, srcElem, dstElem, smoothness, value){
+            
+            markLine[0].name = srcElem;
+            markLine[0].x = points[srcElem].x;
+            markLine[0].y = points[srcElem].y;
+            markLine[0].smoothness = smoothness;
+            markLine[0].value = value;
+            
+            markLine[1].name = dstElem;
+            markLine[1].x = points[dstElem].x;
+            markLine[1].y = points[dstElem].y;
+        }
+        
+        function resetMarkLines(arr, offset, smoothnessInc){
+            arr.splice(0,arr.length);
+            for (var i = 0; i < elementName.length; ++i){
+                for (var j = 0; j < energy[elementName[i]]; ++j){
+                    var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
+                    setMarkLine(marklineBase, elementName[i], elementName[(i+offset)%5], smoothnessInit + smoothnessInc*j, 90 - i*20);
+                    arr.push(marklineBase);
+                }
+            }
+        }
+        
+        
         /*
         iconLibrary: {  
             mark: _iconMark,  
@@ -78,7 +130,8 @@
             image: _iconImage  
         };
         */
-                        
+        var update;
+        var option = {};
         require(
             [
                 'echarts',
@@ -88,7 +141,7 @@
             ],
             function (ec) {
                 var myChart = ec.init(document.getElementById('main'));
-                var option = {
+                option = {
                     backgroundColor: '#1b1b1b',
                     color: ['gold','aqua','lime'],
                     title : {
@@ -166,9 +219,8 @@
                                 title : '火 -1',  
                                 //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                                 color : 'red',
-                                onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                onclick : function (){
+                                    --energyChange['火'];
                                 },  
                             },
                             huo_add : {  
@@ -178,31 +230,7 @@
                                 //icon : 'line',
                                 color : 'red',
                                 onclick : function (){
-                                    //alert('火 +1');
-                                    
-                                    var markLine = {
-                                        data : [
-                                            [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 100,}, {name:'土', x: points['土'].x, y: points['土'].y, }, ],
-                                        ],
-                                    };
-                                    
-                                    var optionCopy = myChart.getOption();
-                                    var length = optionCopy.series[1].markLine.data.length;
-                                    for (var i=length-1;0<=i;i--)
-                                    {
-                                        if ('火' == optionCopy.series[1].markLine.data[i][0].name)
-                                        {
-                                            markLine.data[0][0].smoothness = optionCopy.series[1].markLine.data[i][0].smoothness + 0.05;
-                                            break;
-                                        }
-                                    }
-                                    
-                                    //markLine.data.splice(1,markLine.data.length);
-                                    //var markLine2 = markLine;
-                                    //markLine2.data.splice(1,markLine2.data.length);
-
-                                    //markLine[0] = {{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.3, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, };
-                                    myChart.addMarkLine(1, markLine);
+                                    ++energyChange['火'];
                                 },
                             },
                             
@@ -211,10 +239,12 @@
                                 title : '土 -1',  
                                 //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                                 color : '#A0522D',
-                                onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
-                                }  
+                                onclick : function (){
+                                    --energyChange['土'];
+                                    //alert(1);
+                                    //myChart.delMarkLine(1, '土 > 金');
+                                    //myChart.addMarkLine(2, '土 > 水');
+                                },
                             },
                             tu_add : {  
                                 show : true,  
@@ -223,9 +253,8 @@
                                 //icon : 'line',
                                 color : '#A0522D',
                                 onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
-                                }  
+                                    ++energyChange['土'];
+                                },
                             },
                             
                             
@@ -236,8 +265,7 @@
                                 //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                                 color : 'gold',
                                 onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                    --energyChange['金'];
                                 }  
                             },
                             jin_add : {  
@@ -246,9 +274,8 @@
                                 //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                                 //icon : 'line',
                                 color : 'gold',
-                                onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                onclick : function (){
+                                    ++energyChange['金'];
                                 }  
                             },
                             
@@ -258,8 +285,7 @@
                                 //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                                 color : 'black',
                                 onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                    --energyChange['水'];
                                 }  
                             },
                             shui_add : {  
@@ -269,8 +295,7 @@
                                 //icon : 'line',
                                 color : 'black',
                                 onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                    ++energyChange['水'];
                                 }  
                             },
                             
@@ -280,8 +305,7 @@
                                 //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                                 color : 'green',
                                 onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                    --energyChange['木'];
                                 }  
                             },
                             mu_add : {  
@@ -291,8 +315,7 @@
                                 //icon : 'line',
                                 color : 'green',
                                 onclick : function (){  
-                                    //loadDrugs();  
-                                    alert('3');
+                                    ++energyChange['木'];
                                 }  
                             },
                             
@@ -308,7 +331,7 @@
                         selectedMode: 'multiple',
                         selected:{
                             '生' : true,
-                            '克' : false,
+                            '克' : true,
                             '侮' : false
                         },
                         textStyle : {
@@ -569,24 +592,8 @@
                     ],
                 };
                 
-                var smoothnessInit = 0.2;
-                var smoothnessInc  = 0.05;
-                //var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
                 
-                function setMarkLine(markLine, srcElem, dstElem, smoothness, value){
-                    
-                    markLine[0].name = srcElem;
-                    markLine[0].x = points[srcElem].x;
-                    markLine[0].y = points[srcElem].y;
-                    markLine[0].smoothness = smoothness;
-                    markLine[0].value = value;
-                    
-                    markLine[1].name = dstElem;
-                    markLine[1].x = points[dstElem].x;
-                    markLine[1].y = points[dstElem].y;
-                    
-                    //alert(smoothness);
-                }
+                
                 //var deepCopy= function(source) { 
                 //    var result={};
                 //    for (var key in source) {
@@ -595,24 +602,43 @@
                 //   return result; 
                 //}
                 
-                function addMarkLines(data, offset){
-                    
-                    //var markLineTmp = {data:[],};
-                    
-                    //for (var i = 0; i < energyInit; ++i){
-                    for (var i = 0; i < 1; ++i){
-                        for (var j = 0; j < 5; ++j){
-                            var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
-                            setMarkLine(marklineBase, elementName[j], elementName[(j+offset)%5], smoothnessInit + smoothnessInc*i, 90 - j*20);
-                            data.push(marklineBase);
+                function updateMarkline(){
+                    //alert('in updateMarkline()');
+                    var count = 0;
+                    for (var i = 0; i < elementName.length; ++i){
+                        if (0 != energyChange[elementName[i]]){
+                            var old = energy[elementName[i]];
+                            energy[elementName[i]] += energyChange[elementName[i]];
+                            energyChange[elementName[i]] = 0;
+                            if (energy[elementName[i]] < 1){
+                                energy[elementName[i]] = 1;
+                            } else if (9 < energy[elementName[i]]){
+                                energy[elementName[i]] = 9;
+                            }
+                            if (old != energy[elementName[i]]){
+                                ++count;
+                            }
                         }
                     }
+                    
+                    if (0 != count){
+                        resetMarkLines(option.series[1].markLine.data, 1, smoothnessInc1);
+                        resetMarkLines(option.series[2].markLine.data, 2, smoothnessInc2);
+                        myChart.setOption(option);
+                    }
+                    
                 }
-                alert(option.series[0].markLine.data.length);
-                addMarkLines(option.series[0].markLine.data, 1);
-                //addMarkLines(2, 2);
                 
-                myChart.setOption(option);
+                updateMarkline();
+                update = updateMarkline;
+                
+                //resetMarkLines(option.series[1].markLine.data, 1, smoothnessInc1);
+                //resetMarkLines(option.series[2].markLine.data, 2, smoothnessInc2);
+                //myChart.setOption(option);
+                
+                //var t2 = setInterval('updateMarkline()', 1000);
+                //alert(t2);
+                
                 /*
                 myChart.on(eventName, function (event){
                         CLICK
@@ -620,6 +646,7 @@
                     */
             }
         );
+        var t = setInterval('update()', 2000);
     </script>
 </body>
 </html>
