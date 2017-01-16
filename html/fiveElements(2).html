@@ -48,11 +48,11 @@
         
         function resetEnergy(){
 
-            energy['火'] = 0;
-            energy['土'] = 0;
-            energy['金'] = 0;
-            energy['水'] = 0;
-            energy['木'] = 0;
+            energy['火'] = 10;
+            energy['土'] = 10;
+            energy['金'] = 10;
+            energy['水'] = 10;
+            energy['木'] = 10;
             
             energyChange['火'] = 1;
             energyChange['土'] = 2;
@@ -95,6 +95,8 @@
         var smoothnessInc1  = 0.03;
         var smoothnessInc2  = 0.02;
         
+        var myChart;
+        
         //var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
         
         function setMarkLine(markLine, n, srcElem, dstElem, smoothness, value){
@@ -119,16 +121,23 @@
                 }
             }
         }
+        function redraw(){
+            redrawMarkline(option.series[1].markLine.data, 1, smoothnessInc1);
+            redrawMarkline(option.series[2].markLine.data, 2, smoothnessInc2);
+            myChart.setOption(option);
+        }
         
         function updateEnergyChange(){
             for (var i = 0; i < elementName.length; ++i){
+                
                 var element = elementName[i];
+                
                 // 生
                 var changeSheng = 0;
-                
                 if (energy[sheng[element]] < energy[element]){
                     changeSheng = (energy[element] - energy[sheng[element]])*0.1;
                 }
+                
                 // 克
                 var changeKe = 0;
                 if (energy[element] < energy[ke[element]]){
@@ -137,63 +146,70 @@
                 else {
                     changeKe = (energy[element] - energy[ke[element]])*0.1;
                 }
+                
                 energy[element] -= (changeSheng + changeKe);
                 energyChange[sheng[element]] += changeSheng;
                 energyChange[ke[element]] -= changeKe;
             }
         }
+        
         function localAddMarkLine(element){
             if (energy[element] < 9){
-                var energyTmp = energy[element];
-                
-                var meta1 = {data:[[{name:'abc', x: points['火'].x, y: points['火'].y, smoothness:0.5, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ]]};
-
-                meta1.data[0][0].name = element;
-                meta1.data[0][0].x = points[element].x;
-                meta1.data[0][0].y = points[element].y;
-                meta1.data[0][0].smoothness = smoothnessInit + smoothnessInc1 * energyTmp;
-                meta1.data[0][0].value = value[element];
-                
-                meta1.data[0][1].name = sheng[element]+' '+energyTmp;
-                meta1.data[0][1].x = points[sheng[element]].x;
-                meta1.data[0][1].y = points[sheng[element]].y;
-                
-                console.log('test', meta1);
-                
-                myChart.addMarkLine(1, meta1);
-                
-                
-                var meta2 = {data:[[{name:'abc', x: points['火'].x, y: points['火'].y, smoothness:0.5, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ]]};
-
-                meta2.data[0][0].name = element;
-                meta2.data[0][0].x = points[element].x;
-                meta2.data[0][0].y = points[element].y;
-                meta2.data[0][0].smoothness = smoothnessInit + smoothnessInc1 * energyTmp;
-                meta2.data[0][0].value = value[element];
-                
-                meta2.data[0][1].name = ke[element]+' '+energyTmp;
-                meta2.data[0][1].x = points[ke[element]].x;
-                meta2.data[0][1].y = points[ke[element]].y;
-                myChart.addMarkLine(2, meta2);
-                
-                ++energy[element];
+                //return;
             }
+
+            ++energy[element];
+            var energyTmp = parseInt(energy[element]);
+            
+            // 生
+            var meta1 = {data:[[{name:'abc', x: points['火'].x, y: points['火'].y, smoothness:0.5, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ]]};
+
+            meta1.data[0][0].name = element;
+            meta1.data[0][0].x = points[element].x;
+            meta1.data[0][0].y = points[element].y;
+            meta1.data[0][0].smoothness = smoothnessInit + smoothnessInc1 * energyTmp;
+            meta1.data[0][0].value = value[element];
+            
+            meta1.data[0][1].name = sheng[element]+' '+energyTmp;
+            meta1.data[0][1].x = points[sheng[element]].x;
+            meta1.data[0][1].y = points[sheng[element]].y;
+            
+            myChart.addMarkLine(1, meta1);
+            
+            // 克
+            var meta2 = {data:[[{name:'abc', x: points['火'].x, y: points['火'].y, smoothness:0.5, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ]]};
+
+            meta2.data[0][0].name = element;
+            meta2.data[0][0].x = points[element].x;
+            meta2.data[0][0].y = points[element].y;
+            meta2.data[0][0].smoothness = smoothnessInit + smoothnessInc1 * energyTmp;
+            meta2.data[0][0].value = value[element];
+            
+            meta2.data[0][1].name = ke[element]+' '+energyTmp;
+            meta2.data[0][1].x = points[ke[element]].x;
+            meta2.data[0][1].y = points[ke[element]].y;
+            myChart.addMarkLine(2, meta2);
+            
+            console.log('add', element, " : ", energy[element], " : ", energyTmp, " : ");
         }
         function localDelMarkLine(element){
-            if (1 < energy[element]){
-                
-                --energy[element];
-                var energyTmp = energy[element];
-                
-                var marklineName1 = element+' > '+sheng[element]+' '+energyTmp;
-                //alert(marklineName1);
-                var a = myChart.delMarkLine(1, marklineName1);
-                //alert(a);
-                
-                var marklineName2 = element+' > '+ke[element]+' '+energyTmp;
-                
-                myChart.delMarkLine(2, marklineName2);
+            if (1 == energy[element]){
+                return;
             }
+            
+            var energyTmp = parseInt(energy[element]);
+            
+            var marklineName1 = element+' > '+sheng[element]+' '+energyTmp;
+            
+            var a = myChart.delMarkLine(1, marklineName1);
+            
+            var marklineName2 = element+' > '+ke[element]+' '+energyTmp;
+            
+            myChart.delMarkLine(2, marklineName2);
+            
+            console.log('del', element, " : ", energy[element], " : ", energyTmp, " : ", marklineName1, ' : ', marklineName2);
+            
+            --energy[element];
         }
         function updateMarklineByChange(){
             //console.log(elementName.length);
@@ -209,38 +225,17 @@
                 }
                 
                 while (energyChange[element] <= -1){
-                    localAddMarkLine(element);
+                    localDelMarkLine(element);
                     ++energyChange[element];
                 }
             }
         }
         
-        function updateMarkline(force){
-            var force = arguments[0] ? arguments[0] : false;//设置参数a的默认值为1 
-            
-            var count = 0;
-            
-            for (var i = 0; i < elementName.length; ++i){
-                
-                var element = elementName[i];
-                
-                if (0 != energyChange[elementName[i]]){
-                    var old = energy[elementName[i]];
-                    energy[elementName[i]] += energyChange[elementName[i]];
-                    energyChange[elementName[i]] = 0;
-                    if (energy[elementName[i]] < 1){
-                        energy[elementName[i]] = 1;
-                    } else if (9 < energy[elementName[i]]){
-                        energy[elementName[i]] = 9;
-                    }
-                    if (old != energy[elementName[i]]){
-                        ++count;
-                    }
-                }
-            }
-            
-            
+        function update(){
+            updateEnergyChange();
+            updateMarklineByChange();
         }
+        
         
         /*
         iconLibrary: {  
@@ -274,8 +269,7 @@
         };
         */
         
-        var myChart;
-        var update;
+        
         var option = {
             backgroundColor: '#1b1b1b',
             color: ['gold','aqua','lime'],
@@ -368,9 +362,10 @@
                         //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                         color : 'red',
                         onclick : function (){
-                            //--energyChange['火'];
-                            
-                            localDelMarkLine('火');
+                            --energyChange['火'];
+                            //alert(energyChange['火']);
+                            //alert(energy['火']);
+                            //localDelMarkLine('火');
                             
                         },  
                     },
@@ -394,6 +389,7 @@
                         //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                         color : '#A0522D',
                         onclick : function (){
+                            
                             --energyChange['土'];
                             
                             localDelMarkLine('土');
@@ -482,6 +478,7 @@
                         color : 'yellow',
                         onclick : function(){
                             alert(0);
+                            
                             resetEnergy();
                         },
                     },  
@@ -742,11 +739,7 @@
             ],
         };
         
-        function redraw(){
-            redrawMarkline(option.series[1].markLine.data, 1, smoothnessInc1);
-            redrawMarkline(option.series[2].markLine.data, 2, smoothnessInc2);
-            myChart.setOption(option);
-        }
+        
         
         //var deepCopy= function(source) { 
         //    var result={};
@@ -767,23 +760,21 @@
             function (ec) {
                 
                 myChart = ec.init(document.getElementById('main'));
-                
-                updateMarklineByChange();
-                //updateMarkline(true);
+                redraw();
                 
                 // reset option
-                option = {};
-                option.series = [];
+                //option = {};
+                //option.series = [];
                 //option.series[0] = {markLine:{data:[],}};
-                option.series[1] = {markLine:{data:[],}};
-                option.series[2] = {markLine:{data:[],}};
+                //option.series[1] = {markLine:{data:[],}};
+                //option.series[2] = {markLine:{data:[],}};
                 
                 //myChart.on(ec.EVENT.CLICK, resetEnergy);
             }
         );
         
         //console.log(count);
-        //var t = setInterval('updateMarkline(false)', 1000);
+        var t = setInterval('update()', 1000);
         
     </script>
 </body>
