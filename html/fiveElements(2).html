@@ -60,8 +60,6 @@
             energyChange['水'] = 4;
             energyChange['木'] = 5;
             
-            //updateMarkline();
-            
             //console.log(param);
         }
         resetEnergy();
@@ -134,14 +132,14 @@
                 // 克
                 var changeKe = 0;
                 if (energy[element] < energy[ke[element]]){
-                    changeKe = (energy[ke[element] - energy[element])*0.1;
+                    changeKe = (energy[ke[element]] - energy[element])*0.1;
                 }
                 else {
-                    changeKe = (energy[element] - energy[ke[element])*0.1;
+                    changeKe = (energy[element] - energy[ke[element]])*0.1;
                 }
                 energy[element] -= (changeSheng + changeKe);
-                energyChange[sheng[element] += changeSheng;
-                energyChange[ke[element] -= changeKe;
+                energyChange[sheng[element]] += changeSheng;
+                energyChange[ke[element]] -= changeKe;
             }
         }
         function localAddMarkLine(element){
@@ -159,6 +157,8 @@
                 meta1.data[0][1].name = sheng[element]+' '+energyTmp;
                 meta1.data[0][1].x = points[sheng[element]].x;
                 meta1.data[0][1].y = points[sheng[element]].y;
+                
+                console.log('test', meta1);
                 
                 myChart.addMarkLine(1, meta1);
                 
@@ -196,12 +196,18 @@
             }
         }
         function updateMarklineByChange(){
+            //console.log(elementName.length);
+            
             for (var i = 0; i < elementName.length; ++i){
+                
                 var element = elementName[i];
+                
+                
                 while (1 <= energyChange[element]){
                     localAddMarkLine(element);
                     --energyChange[element];
                 }
+                
                 while (energyChange[element] <= -1){
                     localAddMarkLine(element);
                     ++energyChange[element];
@@ -209,14 +215,13 @@
             }
         }
         
-        
-        
         function updateMarkline(force){
             var force = arguments[0] ? arguments[0] : false;//设置参数a的默认值为1 
             
             var count = 0;
             
             for (var i = 0; i < elementName.length; ++i){
+                
                 var element = elementName[i];
                 
                 if (0 != energyChange[elementName[i]]){
@@ -233,6 +238,7 @@
                     }
                 }
             }
+            
             
         }
         
@@ -554,24 +560,6 @@
                     },
                     data:[],
                     
-                    /*
-                    geoCoord: {
-                        //'北京': [116.4551,40.2539],
-                        //'上海': [121.4648,31.2891],
-                        //'广州': [113.5107,23.2196],
-                        //'拉萨': [91.1865,30.1465],
-                        //'乌鲁木齐': [87.9236,43.5883],
-                        
-                        '中': [points['中'].x, points['中'].y, ],
-                        '火': [points['火'].x, points['火'].y, ],
-                        '土': [points['土'].x, points['土'].y, ],
-                        '金': [points['金'].x, points['金'].y, ],
-                        '水': [points['水'].x, points['水'].y, ],
-                        '木': [points['木'].x, points['木'].y, ],
-                    },
-                    */
-                    
-                    
                     markPoint : {
                         //image://../asset/ico/favicon.png,
                         symbol:'emptyCircle',
@@ -777,8 +765,11 @@
                 'echarts/chart/map'
             ],
             function (ec) {
+                
                 myChart = ec.init(document.getElementById('main'));
-                updateMarkline(true);
+                
+                updateMarklineByChange();
+                //updateMarkline(true);
                 
                 // reset option
                 option = {};
@@ -791,6 +782,7 @@
             }
         );
         
+        //console.log(count);
         //var t = setInterval('updateMarkline(false)', 1000);
         
     </script>
