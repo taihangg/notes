@@ -66,8 +66,8 @@
         marklineData[2] = [];
         
         var smoothnessInit = 0.2;
-        var smoothnessInc1  = 0.005;
-        var smoothnessInc2  = 0.003;
+        var smoothnessInc1  = 0.03;
+        var smoothnessInc2  = 0.02;
         
         var energyInit = 3;
         var energy = [];
@@ -81,11 +81,11 @@
         
         function resetEnergy(){
         
-            energy['火'] = 111.0;
-            energy['土'] = 112.0;
-            energy['金'] = 113.0;
-            energy['水'] = 114.0;
-            energy['木'] = 115.0;
+            energy['火'] = 11.0;
+            energy['土'] = 12.0;
+            energy['金'] = 13.0;
+            energy['水'] = 14.0;
+            energy['木'] = 15.0;
             
             energyChange['火'] = 0.0;
             energyChange['土'] = 0.0;
@@ -261,7 +261,7 @@
             
             myChart.delMarkLine(2, marklineName2);
             
-            console.log('del', element, " : ", energy[element], " : ", " : ", marklineName1, ' : ', marklineName2);
+            console.log('del, ', element, " : ", energy[element], ", ", marklineName1, ', ', marklineName2);
             
             --energy[element];
         }
