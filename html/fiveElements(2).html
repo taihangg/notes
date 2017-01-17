@@ -129,24 +129,32 @@
         }
         
         function logEnergy(note){
-            return;
+            //return;
             var logStr = note;
             logStr += ', energy[';
+            
+            var sum = 0;
+            var sumEnergy = 0;
+            var sumEnergyChange = 0;
+            
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
                 logStr += element+'='+energy[element]+', ';
-                //console.log(note, ', energy[', element, ']=', energy[element], ', energyChange[', element, ']=', energyChange[element]);
+                sumEnergy += energy[element];
+                sum += energy[element];
             }
             logStr += ']';
             logStr += ', energyChange[';
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
                 logStr += element+'='+energyChange[element]+', ';
-                //console.log(note, ', energy[', element, ']=', energy[element], ', energyChange[', element, ']=', energyChange[element]);
+                sumEnergyChange += energyChange[element];
+                sum += energyChange[element];
             }
             logStr += ']';
             
-            console.log(logStr);
+            //console.log(logStr);
+            console.log(note, 'sum=', sum, ', sumEnergy=', sumEnergy, ', sumEnergyChange=', sumEnergyChange);
             //console.log('');
         }
         
@@ -155,7 +163,7 @@
             //console.log('energy.length=', energy.length);
             //console.log('before updateEnergyChange', energy, energyChange);
             
-            logEnergy('before updateEnergyChange');
+            //logEnergy('before updateEnergyChange');
             
             for (var i = 0; i < elementName.length; ++i){
                 
@@ -184,7 +192,7 @@
                 //console.log('in updateEnergyChange', energy, energyChange);
             }
             
-            logEnergy('after updateEnergyChange');
+            logEnergy('after  updateEnergyChange');
             
         }
         
@@ -229,7 +237,7 @@
         }
         function localDelMarkLine(element){
             if (1 == energy[element]){
-                return;
+                //return;
             }
             
             var energyTmp = parseInt(energy[element]);
@@ -259,7 +267,7 @@
                     --energyChange[element];
                 }
                 
-                while (energyChange[element] <= -1){
+                while ((energyChange[element] <= -1) && (1 < energy[element])){
                     localDelMarkLine(element);
                     ++energyChange[element];
                 }
@@ -268,6 +276,7 @@
         }
         
         function update(){
+            //logEnergy('in update');
             updateEnergyChange();
             updateMarklineByChange();
         }
@@ -810,7 +819,8 @@
         );
         
         //console.log(count);
-        var t = setInterval('update()', 3000);
+        var t1 = setInterval('update()', 3000);
+        //var t2 = setTimeout('update()', 1000);
         
     </script>
 </body>
