@@ -188,6 +188,7 @@
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
                 energy[element] += energyChange[element];
+                energyChange[element] = 0;
             }
             
         }
@@ -332,7 +333,7 @@
                 y: 'center',
                 //backgroundColor:'rgba(0,0,0,0)',
                 //borderColor:'#ccc',
-                itemSize:20,
+                itemSize:30,
                 //color: ['red','#A0522D','gold','black','green',],
                 //color: ['red','red','#A0522D','gold','black','green',],
                 //effectiveColor : 'gold',
@@ -495,18 +496,20 @@
                         }  
                     },
                     
+                    /*
                     blank : {
                         show: true,
                         title : '间隔',
                         color : 'gray',
                         onclick : function(){
                         },
-                    },  
+                    },
+                    */                    
                     
                     reset : {
                         show: true,
                         title : '还原',
-                        color : 'yellow',
+                        color : 'white',
                         onclick : function(){
                             resetEnergy();
                             redraw();
