@@ -177,9 +177,15 @@
                 }
                 
                 
-                energyChange[element] -= (changeSheng + changeKe);
+                energyChange[element] -= changeSheng;
                 energyChange[sheng[element]] += changeSheng;
+                
+                energyChange[element] -= changeKe;
                 energyChange[ke[element]] += changeKe;
+                
+                if (changeKe < energyChange[element]){
+                    
+                }
                 
             }
             
@@ -187,13 +193,16 @@
             
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
-                energy[element] += energyChange[element];
-                energyChange[element] = 0;
+                if (0 < energy[element] + energyChange[element])
+                {
+                    energy[element] += energyChange[element];
+                    energyChange[element] = 0;
+                }
             }
             
         }
         
-        function localAddMarkLine(element){
+        function addOneMarkLine(element){
             if (energy[element] < 9){
                 //return;
             }
@@ -222,7 +231,7 @@
             meta2.data[0][0].name = element;
             meta2.data[0][0].x = points[element].x;
             meta2.data[0][0].y = points[element].y;
-            meta2.data[0][0].smoothness = smoothnessInit + smoothnessInc1 * energyTmp;
+            meta2.data[0][0].smoothness = smoothnessInit + smoothnessInc2 * energyTmp;
             meta2.data[0][0].value = value[element];
             
             meta2.data[0][1].name = ke[element]+' '+energyTmp;
@@ -232,7 +241,7 @@
             
             console.log('add', element, " : lineNum=", lineNum[element], ', energy=', energy[element]);
         }
-        function localDelMarkLine(element){
+        function delOneMarkLine(element){
             if (1 == energy[element]){
                 //return;
             }
@@ -258,13 +267,11 @@
                 var element = elementName[i];
                 
                 while ((lineNum[element] < parseInt(energy[element])) && (lineNum[element] < 100)){
-                    localAddMarkLine(element);
-                    //--energyChange[element];
+                    addOneMarkLine(element);
                 }
                 
                 while ((parseInt(energy[element]) < lineNum[element]) && (1 < lineNum[element])){
-                    localDelMarkLine(element);
-                    //++energyChange[element];
+                    delOneMarkLine(element);
                 }
             }
             //console.log('energyChange[', element, ']=', energyChange[element]);
@@ -391,7 +398,6 @@
                         color : 'red',
                         onclick : function (){
                             ++energyChange['火'];
-                            //localAddMarkLine('火');
                         },
                     },
                     huo_sub : {  
@@ -401,7 +407,6 @@
                         color : 'red',
                         onclick : function (){
                             --energyChange['火'];
-                            //localDelMarkLine('火');
                         },  
                     },
                     
@@ -414,7 +419,6 @@
                         color : '#A0522D',
                         onclick : function (){  
                             ++energyChange['土'];
-                            //localAddMarkLine('土');
                         },
                     },
                     tu_sub : {  
@@ -424,7 +428,6 @@
                         color : '#A0522D',
                         onclick : function (){
                             --energyChange['土'];
-                            //localDelMarkLine('土');
                         },
                     },
                     
@@ -436,7 +439,6 @@
                         color : 'gold',
                         onclick : function (){
                             ++energyChange['金'];
-                            //localAddMarkLine('金');
                         }  
                     },
                     jin_sub : {  
@@ -446,7 +448,6 @@
                         color : 'gold',
                         onclick : function (){  
                             --energyChange['金'];
-                            //localDelMarkLine('金');
                         }  
                     },
                     
@@ -459,7 +460,6 @@
                         color : 'black',
                         onclick : function (){  
                             ++energyChange['水'];
-                            //localAddMarkLine('水');
                         }  
                     },
                     shui_sub : {  
@@ -469,7 +469,6 @@
                         color : 'black',
                         onclick : function (){  
                             --energyChange['水'];
-                            //localDelMarkLine('水');
                         }  
                     },
                     
@@ -482,7 +481,6 @@
                         color : 'green',
                         onclick : function (){  
                             ++energyChange['木'];
-                            //localAddMarkLine('木');
                         }  
                     },
                     mu_sub : {  
@@ -492,7 +490,6 @@
                         color : 'green',
                         onclick : function (){  
                             --energyChange['木'];
-                            //localDelMarkLine('木');
                         }  
                     },
                     
