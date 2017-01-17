@@ -66,8 +66,8 @@
         marklineData[2] = [];
         
         var smoothnessInit = 0.2;
-        var smoothnessInc1  = 0.03;
-        var smoothnessInc2  = 0.02;
+        var smoothnessInc1  = 0.005;
+        var smoothnessInc2  = 0.003;
         
         var energyInit = 3;
         var energy = [];
@@ -81,11 +81,11 @@
         
         function resetEnergy(){
         
-            energy['火'] = 11.0;
-            energy['土'] = 12.0;
-            energy['金'] = 13.0;
-            energy['水'] = 14.0;
-            energy['木'] = 15.0;
+            energy['火'] = 111.0;
+            energy['土'] = 112.0;
+            energy['金'] = 113.0;
+            energy['水'] = 114.0;
+            energy['木'] = 115.0;
             
             energyChange['火'] = 0.0;
             energyChange['土'] = 0.0;
@@ -128,42 +128,55 @@
             myChart.setOption(option);
         }
         
-        function logEnergy(note){
+        function logStat(note){
             //return;
-            var logStr = note;
-            logStr += ', energy[';
+            
+            console.log(note,' {');
             
             var sum = 0;
             var sumEnergy = 0;
             var sumEnergyChange = 0;
-            
+            /*
+            var logEnergy = 'energy[';
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
-                logStr += element+'='+energy[element]+', ';
+                logEnergy += element+'='+energy[element]+', ';
+                lconsole.log(element+'='+energy[element]);
+                
                 sumEnergy += energy[element];
                 sum += energy[element];
             }
-            logStr += ']';
-            logStr += ', energyChange[';
+            logEnergy += ']';
+            
+            var logEnergyChange = 'energyChange[';
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
-                logStr += element+'='+energyChange[element]+', ';
+                logEnergyChange += element+'='+energyChange[element]+', ';
+                lconsole.log(element+' : '+energy[element], ' ', energyChange[element]);
                 sumEnergyChange += energyChange[element];
                 sum += energyChange[element];
             }
-            logStr += ']';
+            logEnergyChange += ']';
+            */
+            
+            
+            for (var i = 0; i < elementName.length; ++i){
+                var element = elementName[i];
+                
+                console.log('\t', element+' : '+energy[element], ', ', energyChange[element]);
+                
+                sumEnergy += energy[element];
+                sumEnergyChange += energyChange[element];
+            }
             
             //console.log(logStr);
-            console.log(note, 'sum=', sum, ', sumEnergy=', sumEnergy, ', sumEnergyChange=', sumEnergyChange);
+            sum = sumEnergy + sumEnergyChange;
+            console.log('\t', 'sum=', sum, ', sumEnergy=', sumEnergy, ', sumEnergyChange=', sumEnergyChange);
+            console.log('}');
             //console.log('');
         }
         
         function updateEnergyChange(){
-            
-            //console.log('energy.length=', energy.length);
-            //console.log('before updateEnergyChange', energy, energyChange);
-            
-            //logEnergy('before updateEnergyChange');
             
             for (var i = 0; i < elementName.length; ++i){
                 
@@ -184,15 +197,13 @@
                     changeKe = (energy[element] - energy[ke[element]])*0.1;
                 }
                 
-                //energy[element] -= (changeSheng + changeKe);
+                energyChange[element] -= (changeSheng + changeKe);
                 energyChange[sheng[element]] += changeSheng;
                 energyChange[ke[element]] -= changeKe;
                 
-                //console.log('in updateEnergyChange');
-                //console.log('in updateEnergyChange', energy, energyChange);
             }
             
-            logEnergy('after  updateEnergyChange');
+            logStat('after  updateEnergyChange');
             
         }
         
@@ -233,7 +244,7 @@
             meta2.data[0][1].y = points[ke[element]].y;
             myChart.addMarkLine(2, meta2);
             
-            console.log('add', element, " : ", energy[element], " : ", energyTmp);
+            console.log('add', element, " : ", energy[element]);
         }
         function localDelMarkLine(element){
             if (1 == energy[element]){
@@ -250,7 +261,7 @@
             
             myChart.delMarkLine(2, marklineName2);
             
-            console.log('del', element, " : ", energy[element], " : ", energyTmp, " : ", marklineName1, ' : ', marklineName2);
+            console.log('del', element, " : ", energy[element], " : ", " : ", marklineName1, ' : ', marklineName2);
             
             --energy[element];
         }
@@ -276,7 +287,6 @@
         }
         
         function update(){
-            //logEnergy('in update');
             updateEnergyChange();
             updateMarklineByChange();
         }
@@ -396,9 +406,8 @@
                         //icon : 'line',
                         color : 'red',
                         onclick : function (){
-                            //++energyChange['火'];
-                            
-                            localAddMarkLine('火');
+                            ++energyChange['火'];
+                            //localAddMarkLine('火');
                         },
                     },
                     huo_sub : {  
@@ -408,10 +417,7 @@
                         color : 'red',
                         onclick : function (){
                             --energyChange['火'];
-                            //alert(energyChange['火']);
-                            //alert(energy['火']);
                             //localDelMarkLine('火');
-                            
                         },  
                     },
                     
@@ -424,8 +430,7 @@
                         color : '#A0522D',
                         onclick : function (){  
                             ++energyChange['土'];
-                            
-                            localAddMarkLine('土');
+                            //localAddMarkLine('土');
                         },
                     },
                     tu_sub : {  
@@ -434,10 +439,8 @@
                         //icon : 'image://http://echarts.baidu.com/images/favicon.png',  
                         color : '#A0522D',
                         onclick : function (){
-                            
                             --energyChange['土'];
-                            
-                            localDelMarkLine('土');
+                            //localDelMarkLine('土');
                         },
                     },
                     
@@ -449,7 +452,7 @@
                         color : 'gold',
                         onclick : function (){
                             ++energyChange['金'];
-                            localAddMarkLine('金');
+                            //localAddMarkLine('金');
                         }  
                     },
                     jin_sub : {  
@@ -459,7 +462,7 @@
                         color : 'gold',
                         onclick : function (){  
                             --energyChange['金'];
-                            localDelMarkLine('金');
+                            //localDelMarkLine('金');
                         }  
                     },
                     
@@ -472,7 +475,7 @@
                         color : 'black',
                         onclick : function (){  
                             ++energyChange['水'];
-                            localAddMarkLine('水');
+                            //localAddMarkLine('水');
                         }  
                     },
                     shui_sub : {  
@@ -482,7 +485,7 @@
                         color : 'black',
                         onclick : function (){  
                             --energyChange['水'];
-                            localDelMarkLine('水');
+                            //localDelMarkLine('水');
                         }  
                     },
                     
@@ -495,7 +498,7 @@
                         color : 'green',
                         onclick : function (){  
                             ++energyChange['木'];
-                            localAddMarkLine('木');
+                            //localAddMarkLine('木');
                         }  
                     },
                     mu_sub : {  
@@ -505,7 +508,7 @@
                         color : 'green',
                         onclick : function (){  
                             --energyChange['木'];
-                            localDelMarkLine('木');
+                            //localDelMarkLine('木');
                         }  
                     },
                     
@@ -522,9 +525,8 @@
                         title : '还原',
                         color : 'yellow',
                         onclick : function(){
-                            alert(0);
-                            
                             resetEnergy();
+                            redraw();
                         },
                     },  
                     
