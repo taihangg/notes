@@ -70,28 +70,29 @@
         var smoothnessInc2  = 0.02;
         
         var energyInit = 3;
-        var energy = [];
-        //energy['火'] = energyInit;
-        //energy['土'] = energyInit;
-        //energy['金'] = energyInit;
-        //energy['水'] = energyInit;
-        //energy['木'] = energyInit;
-        
+        var energy = [];        
         var energyChange = [];
+        var lineNum = [];
         
         function resetEnergy(){
         
-            energy['火'] = 11.0;
-            energy['土'] = 12.0;
-            energy['金'] = 13.0;
-            energy['水'] = 14.0;
-            energy['木'] = 15.0;
+            energy['火'] = 10.0;
+            energy['土'] = 10.0;
+            energy['金'] = 10.0;
+            energy['水'] = 10.0;
+            energy['木'] = 10.0;
             
             energyChange['火'] = 0.0;
             energyChange['土'] = 0.0;
             energyChange['金'] = 0.0;
             energyChange['水'] = 0.0;
             energyChange['木'] = 0.0;
+            
+            lineNum['火'] = parseInt(energy['火']);
+            lineNum['土'] = parseInt(energy['土']);
+            lineNum['金'] = parseInt(energy['金']);
+            lineNum['水'] = parseInt(energy['水']);
+            lineNum['木'] = parseInt(energy['木']);
             
         }
         resetEnergy();
@@ -128,55 +129,31 @@
             myChart.setOption(option);
         }
         
-        function logStat(note){
+        function logStatus(note){
             //return;
             
             console.log(note,' {');
             
             var sum = 0;
+            var sumLineNum = 0;
             var sumEnergy = 0;
             var sumEnergyChange = 0;
-            /*
-            var logEnergy = 'energy[';
-            for (var i = 0; i < elementName.length; ++i){
-                var element = elementName[i];
-                logEnergy += element+'='+energy[element]+', ';
-                lconsole.log(element+'='+energy[element]);
-                
-                sumEnergy += energy[element];
-                sum += energy[element];
-            }
-            logEnergy += ']';
-            
-            var logEnergyChange = 'energyChange[';
-            for (var i = 0; i < elementName.length; ++i){
-                var element = elementName[i];
-                logEnergyChange += element+'='+energyChange[element]+', ';
-                lconsole.log(element+' : '+energy[element], ' ', energyChange[element]);
-                sumEnergyChange += energyChange[element];
-                sum += energyChange[element];
-            }
-            logEnergyChange += ']';
-            */
-            
             
             for (var i = 0; i < elementName.length; ++i){
                 var element = elementName[i];
                 
-                console.log('\t', element+' : '+energy[element], ', ', energyChange[element]);
-                
+                console.log('\t', element+' : '+lineNum[element]+', '+energy[element]+', '+energyChange[element]);
+                sumLineNum += lineNum[element];
                 sumEnergy += energy[element];
                 sumEnergyChange += energyChange[element];
             }
             
-            //console.log(logStr);
             sum = sumEnergy + sumEnergyChange;
-            console.log('\t', 'sum=', sum, ', sumEnergy=', sumEnergy, ', sumEnergyChange=', sumEnergyChange);
+            console.log('\t', 'sumLineNum='+sumLineNum+', sum='+sum+', sumEnergy='+sumEnergy+', sumEnergyChange='+sumEnergyChange);
             console.log('}');
-            //console.log('');
         }
         
-        function updateEnergyChange(){
+        function updateStatus(){
             
             for (var i = 0; i < elementName.length; ++i){
                 
@@ -185,11 +162,13 @@
                 // 生
                 var changeSheng = 0;
                 if (energy[sheng[element]] < energy[element]){
-                    changeSheng = (energy[element] - energy[sheng[element]])*0.1;
+                    changeSheng = (energy[element] - energy[sheng[element]])*0.01;
                 }
                 
                 // 克
                 var changeKe = 0;
+                //changeKe = (energy[ke[element]] - energy[element])*0.01;
+                
                 if (energy[element] < energy[ke[element]]){
                     changeKe = (energy[ke[element]] - energy[element])*0.1;
                 }
@@ -197,13 +176,19 @@
                     changeKe = (energy[element] - energy[ke[element]])*0.1;
                 }
                 
+                
                 energyChange[element] -= (changeSheng + changeKe);
                 energyChange[sheng[element]] += changeSheng;
-                energyChange[ke[element]] -= changeKe;
+                energyChange[ke[element]] += changeKe;
                 
             }
             
-            logStat('after  updateEnergyChange');
+            logStatus('in updateStatus');
+            
+            for (var i = 0; i < elementName.length; ++i){
+                var element = elementName[i];
+                energy[element] += energyChange[element];
+            }
             
         }
         
@@ -212,8 +197,8 @@
                 //return;
             }
 
-            ++energy[element];
-            var energyTmp = parseInt(energy[element]);
+            ++lineNum[element];
+            var energyTmp = lineNum[element];
             
             // 生
             var meta1 = {data:[[{name:'abc', x: points['火'].x, y: points['火'].y, smoothness:0.5, value: 90, }, {name:'金', x: points['金'].x, y: points['金'].y, }, ]]};
@@ -244,51 +229,49 @@
             meta2.data[0][1].y = points[ke[element]].y;
             myChart.addMarkLine(2, meta2);
             
-            console.log('add', element, " : ", energy[element]);
+            console.log('add', element, " : lineNum=", lineNum[element], ', energy=', energy[element]);
         }
         function localDelMarkLine(element){
             if (1 == energy[element]){
                 //return;
             }
             
-            var energyTmp = parseInt(energy[element]);
+            var energyTmp = lineNum[element];
             
             var marklineName1 = element+' > '+sheng[element]+' '+energyTmp;
-            
-            var a = myChart.delMarkLine(1, marklineName1);
+            myChart.delMarkLine(1, marklineName1);
             
             var marklineName2 = element+' > '+ke[element]+' '+energyTmp;
-            
             myChart.delMarkLine(2, marklineName2);
             
-            console.log('del, ', element, " : ", energy[element], ", ", marklineName1, ', ', marklineName2);
+            --lineNum[element];
             
-            --energy[element];
+            console.log('del, ', element, " : lineNum=", lineNum[element], ', energy=', energy[element], ", ", marklineName1, ', ', marklineName2);
         }
-        function updateMarklineByChange(){
-            //console.log('in updateMarklineByChange');
+        function updateMarkline(){
+            //console.log('in updateMarkline');
             var logStr = 'in updateMarklineByChange, ';
             //console.log('parseInt(11)=', parseInt(11));;
             for (var i = 0; i < elementName.length; ++i){
                 
                 var element = elementName[i];
                 
-                while (1 <= energyChange[element]){
+                while ((lineNum[element] < parseInt(energy[element])) && (lineNum[element] < 100)){
                     localAddMarkLine(element);
-                    --energyChange[element];
+                    //--energyChange[element];
                 }
                 
-                while ((energyChange[element] <= -1) && (1 < energy[element])){
+                while ((parseInt(energy[element]) < lineNum[element]) && (1 < lineNum[element])){
                     localDelMarkLine(element);
-                    ++energyChange[element];
+                    //++energyChange[element];
                 }
             }
             //console.log('energyChange[', element, ']=', energyChange[element]);
         }
         
         function update(){
-            updateEnergyChange();
-            updateMarklineByChange();
+            updateStatus();
+            updateMarkline();
         }
         
         
@@ -809,6 +792,15 @@
                 myChart = ec.init(document.getElementById('main'));
                 redraw();
                 
+                
+                // for test
+                if (0){
+                    ++energyChange['火'];
+                    for (var i = 0; i < 6; ++i){
+                        update();
+                    }
+                }
+                
                 // reset option
                 //option = {};
                 //option.series = [];
@@ -823,6 +815,8 @@
         //console.log(count);
         var t1 = setInterval('update()', 3000);
         //var t2 = setTimeout('update()', 1000);
+        
+        
         
     </script>
 </body>
