@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>五行生克动态图</title>
+<title>动态变迁图</title>
 </head>
 <body>
     <div id="main" style="height:600px;width:600px;"></div>
@@ -36,33 +36,7 @@
         points['木'] = {x: baseX - (radius * sin72),   y: baseY - (radius * cos72),    };
         points['中'] = {x: baseX,                      y: baseY,                       };
         
-        var energyInit = 3;
-        var energy = [];
-        //energy['火'] = energyInit;
-        //energy['土'] = energyInit;
-        //energy['金'] = energyInit;
-        //energy['水'] = energyInit;
-        //energy['木'] = energyInit;
         
-        var energyChange = [];
-        
-        function resetEnergy(){
-
-            energy['火'] = 10;
-            energy['土'] = 10;
-            energy['金'] = 10;
-            energy['水'] = 10;
-            energy['木'] = 10;
-            
-            energyChange['火'] = 1;
-            energyChange['土'] = 2;
-            energyChange['金'] = 3;
-            energyChange['水'] = 4;
-            energyChange['木'] = 5;
-            
-            //console.log(param);
-        }
-        resetEnergy();
         
         var elementName = ['火', '土', '金', '水', '木', ];
         var sheng = [];
@@ -95,6 +69,33 @@
         var smoothnessInc1  = 0.03;
         var smoothnessInc2  = 0.02;
         
+        var energyInit = 3;
+        var energy = [];
+        //energy['火'] = energyInit;
+        //energy['土'] = energyInit;
+        //energy['金'] = energyInit;
+        //energy['水'] = energyInit;
+        //energy['木'] = energyInit;
+        
+        var energyChange = [];
+        
+        function resetEnergy(){
+        
+            energy['火'] = 11.0;
+            energy['土'] = 12.0;
+            energy['金'] = 13.0;
+            energy['水'] = 14.0;
+            energy['木'] = 15.0;
+            
+            energyChange['火'] = 0.0;
+            energyChange['土'] = 0.0;
+            energyChange['金'] = 0.0;
+            energyChange['水'] = 0.0;
+            energyChange['木'] = 0.0;
+            
+        }
+        resetEnergy();
+        
         var myChart;
         
         //var marklineBase = [{name:'火', x: points['火'].x, y: points['火'].y, smoothness:0.2, value: 90, }, {name:'土', x: points['土'].x, y: points['土'].y, }, ];
@@ -121,13 +122,41 @@
                 }
             }
         }
-        function redraw(){
+        function redraw(note){
             redrawMarkline(option.series[1].markLine.data, 1, smoothnessInc1);
             redrawMarkline(option.series[2].markLine.data, 2, smoothnessInc2);
             myChart.setOption(option);
         }
         
+        function logEnergy(note){
+            return;
+            var logStr = note;
+            logStr += ', energy[';
+            for (var i = 0; i < elementName.length; ++i){
+                var element = elementName[i];
+                logStr += element+'='+energy[element]+', ';
+                //console.log(note, ', energy[', element, ']=', energy[element], ', energyChange[', element, ']=', energyChange[element]);
+            }
+            logStr += ']';
+            logStr += ', energyChange[';
+            for (var i = 0; i < elementName.length; ++i){
+                var element = elementName[i];
+                logStr += element+'='+energyChange[element]+', ';
+                //console.log(note, ', energy[', element, ']=', energy[element], ', energyChange[', element, ']=', energyChange[element]);
+            }
+            logStr += ']';
+            
+            console.log(logStr);
+            //console.log('');
+        }
+        
         function updateEnergyChange(){
+            
+            //console.log('energy.length=', energy.length);
+            //console.log('before updateEnergyChange', energy, energyChange);
+            
+            logEnergy('before updateEnergyChange');
+            
             for (var i = 0; i < elementName.length; ++i){
                 
                 var element = elementName[i];
@@ -147,10 +176,16 @@
                     changeKe = (energy[element] - energy[ke[element]])*0.1;
                 }
                 
-                energy[element] -= (changeSheng + changeKe);
+                //energy[element] -= (changeSheng + changeKe);
                 energyChange[sheng[element]] += changeSheng;
                 energyChange[ke[element]] -= changeKe;
+                
+                //console.log('in updateEnergyChange');
+                //console.log('in updateEnergyChange', energy, energyChange);
             }
+            
+            logEnergy('after updateEnergyChange');
+            
         }
         
         function localAddMarkLine(element){
@@ -190,7 +225,7 @@
             meta2.data[0][1].y = points[ke[element]].y;
             myChart.addMarkLine(2, meta2);
             
-            console.log('add', element, " : ", energy[element], " : ", energyTmp, " : ");
+            console.log('add', element, " : ", energy[element], " : ", energyTmp);
         }
         function localDelMarkLine(element){
             if (1 == energy[element]){
@@ -212,12 +247,12 @@
             --energy[element];
         }
         function updateMarklineByChange(){
-            //console.log(elementName.length);
-            
+            //console.log('in updateMarklineByChange');
+            var logStr = 'in updateMarklineByChange, ';
+            //console.log('parseInt(11)=', parseInt(11));;
             for (var i = 0; i < elementName.length; ++i){
                 
                 var element = elementName[i];
-                
                 
                 while (1 <= energyChange[element]){
                     localAddMarkLine(element);
@@ -229,6 +264,7 @@
                     ++energyChange[element];
                 }
             }
+            //console.log('energyChange[', element, ']=', energyChange[element]);
         }
         
         function update(){
@@ -274,7 +310,7 @@
             backgroundColor: '#1b1b1b',
             color: ['gold','aqua','lime'],
             title : {
-                text: '五行生克',
+                text: '动态变迁图',
                 subtext:'数据纯属虚构 ^_^',
                 x:'center',
                 textStyle : {
@@ -774,7 +810,7 @@
         );
         
         //console.log(count);
-        var t = setInterval('update()', 1000);
+        var t = setInterval('update()', 3000);
         
     </script>
 </body>
