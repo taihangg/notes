@@ -126,7 +126,7 @@
         function redraw(note){
             redrawMarkline(option.series[1].markLine.data, 1, smoothnessInc1);
             redrawMarkline(option.series[2].markLine.data, 2, smoothnessInc2);
-            myChart.setOption(option);
+            myChart.setOption(option, true);
         }
         
         function logStatus(note){
@@ -804,7 +804,7 @@
                 // reset option
                 //option = {};
                 //option.series = [];
-                //option.series[0] = {markLine:{data:[],}};
+                ////option.series[0] = {markLine:{data:[],}};
                 //option.series[1] = {markLine:{data:[],}};
                 //option.series[2] = {markLine:{data:[],}};
                 
