@@ -6,6 +6,17 @@ sed -n '/bsp/!d' file
 !号不是修饰p而是修饰前面的匹配模式的xxx，可以这么理解吗?, 忽略大小写的I选项也同理
 
 
+cat work.txt |\
+sed -n '/tag_a/,/tag_b/{
+p;
+/tag_b/a
+}' #打印tag_a到tag_b之间的内容，并在tag_b之后加入一个空行，支持有多个这种段落
+cat work.txt |\
+sed -n '/tag_a/,/tag_b/!{
+p;
+
+}' -e '/tag_b/a'#打印除了tag_a到tag_b之间的内容，即提出tag_a到tag_b直接的内容，支持有多个这种段落
+
 
 #t是条件跳转，如果匹配成功则跳转到a，if(true)-else，T则是匹配失败则跳转，if(false)-else
 sed "/ccc/s/$/\tYES/;ta;s/$/\tNO/;:a" test.txt
@@ -265,3 +276,15 @@ sed -n "
 
 ## 在原来行之前插入行号，或者用grep -n
 sed = test.txt | sed 'N;s/\n/\t/'
+
+
+## 插入空行
+# 在匹配式样“regex”的行之前插入一空行
+sed '/regex/{x;p;x;}'
+# 在匹配式样“regex”的行之后插入一空行
+sed '/regex/G'
+# 在匹配式样“regex”的行之前和之后各插入一空行
+sed '/regex/{x;p;x;G;}'
+
+
+

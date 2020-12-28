@@ -99,3 +99,4 @@ counsel-imenu
 C-;
 
 
+C-c . 插入日期, alt+h/j/k/l来移动日期
