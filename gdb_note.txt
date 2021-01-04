@@ -182,38 +182,38 @@ print x=4       修改运行时候的变量值
 
 
 备常用命令：
-  １.常看源码：ｌｉｓｔ（ｌ）　
-　　ｌｉｓｔ　＜ｌｉｎｅｎｕｍｂｅｒ＞　行号
-　　ｌｉｓｔ　＜＋ｏｆｆｓｅｔ＞　当前行号的正偏移
-　　ｌｉｓｔ　＜－ｏｆｆｓｅｔ＞　当前行号的负偏移
-　　ｌｉｓｔ　＜ｆｉｌｅｎａｍｅ：ｌｉｎｅｎｕｍｂｅｒ＞　哪个文件的哪一行
-　　ｌｉｓｔ　＜ｆｕｎｃｔｉｏｎ＞　函数名
-　　ｌｉｓｔ　＜ｆｉｌｅｎａｍｅ：ｆｕｎｃｔｉｏｎ＞　文件的哪个函数
-　　ｌｉｓｔ　＜＊ａｄｄｒｅｓｓ＞　程序运行时语句在内存中的地址
+１.常看源码：list（l）　
+　　list　<linenumber>　行号
+　　list　<+offset>　当前行号的正偏移
+　　list　<-offset>　当前行号的负偏移
+　　list　<filename：linenumber>　哪个文件的哪一行
+　　list　<function>　函数名
+　　list　<filename：function>　文件的哪个函数
+　　list　<*address>　程序运行时语句在内存中的地址
 
-　２．设置断点：ｂｒｅａｋ（ｂ）
-　　ｂｒｅａｋ　＜ｆｕｎｃｔｉｏn＞　指定函数断点
-　　ｂｒｅａｋ　＜ｌｉｎｅｎｕｍｂｅｒ＞　指定行号断点
-　　ｂｒｅａｋ　＜＋ｏｆｆｓｅｔ／－ｏｆｆｓｅｔ＞　当前行号的正／负偏移
-　　ｂｒｅａｋ　＜ｆｉｌｅｎａｍｅ：ｌｉｎｅｎｕｍｂｅｒ＞　哪个文件的哪一行
-　　ｂｒｅａｋ　＜＊ａｄｄｒｅｓｓ＞　运行中的内存地址
-　　ｂｒｅａｋ　不带参数，下一条指令停止处
-　　ｂｒｅａｋ ...　ｉｆ　＜ｃｏｎｄｉｔｉｏｎ＞　在运行中，当ｃｏｎｄｉｔｉｏｎ条件满足时停止。
-　　　　ｅｇ．　ｂｒｅａｋ　ｉｆ　ｉ＝１００ //当i=100时，立即停止
+２．设置断点：break（b）
+　　break　<function>　指定函数断点
+　　break　<linenumber>　指定行号断点
+　　break　<+offset/-offset>　当前行号的正/负偏移
+　　break　<filename：linenumber>　哪个文件的哪一行
+　　break　<*address>　运行中的内存地址
+　　break　不带参数，下一条指令停止处
+　　break ...　if　<condition>　在运行中，当condition条件满足时停止。
+　　　　eｇ．　break　if　i＝１００ //当i=100时，立即停止
                  break foo if i=100   //断点设置在foo中，断点条件是i-100, 一点在函数foo中，i的值等于100,被停止。
  
                  
 
-　３．查看信息：ｉｎｆｏ
-　　ｉｎｆｏ　ｂｒｅａｋ　查看断点信息
+３．查看信息：info
+　　info　break　查看断点信息
     info locals 打印出当前函数中所有局部变量及其值
-　　ｉｎｆｏ　ｓｔａｃｋ　查看栈中信息
+　　info　stack　查看栈中信息
     info frame 更详细的栈层地址信息
-　　ｉｎｆｏ　ａｒｇｓ　查看参数信息
-　　ｉｎｆｏ　ｒｅｇｉｓｔｅｒｓ／ｉｎｆｏ　ａｌｌ－ｒｅｇｉｓｔｅｒｓ　查看（所有）寄存器信息
-　　ｉｎｆｏ　ｓｏｕｒｃｅｓ　查看项目的源代码信息
+　　info　arｇs　查看参数信息
+　　info　reｇisters/info　all-reｇisters　查看（所有）寄存器信息
+　　info　sources　查看项目的源代码信息
 
-４．维护breakpoint：ｄｉｓａｂｌｅ/enable/clear/delete
+４．维护breakpoint：disable/enable/clear/delete
      disable(dis) 【breakpoints】 【range...】
        如果没有参数，则停止所有的断点，
      enable 【breakpoints】【range】
