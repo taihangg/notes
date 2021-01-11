@@ -95,14 +95,14 @@ break 123 #行号
 
 断点commands
 #默认是给最近定义的断点
-commands 
+commands
     silent
     watch i
     c
 end
 
 #直接指定给哪一个断点
-commands 2 
+commands 2
     enable
     c
 end
