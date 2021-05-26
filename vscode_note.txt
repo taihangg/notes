@@ -1,0 +1,35 @@
+    F12                 跳转到定义
+    shift+F12           查找所有引用
+    alt+shift+F12       ...
+    Ctrl+F12            同时修改本文件中所有匹配
+
+    ctrl+alt+-          返回
+
+    Ctrl+Shift+]        移动到后半个括号： 
+    
+    Alt+F12             定义处缩略图：只看一眼而不跳转过去
+    
+    
+    Alt+Shift+鼠标左键，Ctrl+Alt+Down/Up     多行编辑(列编辑)
+    
+    Ctrl+Shift+L        同时选中所有匹配
+    
+    Ctrl+U              回退上一个光标操作
+    
+    ctrl+shift+e        定位到资源管理器；在资源管理器中，用ctrl+f，再esc，可以回到编辑区；
+    
+    ctrl+shift+f        搜索。搜索完后，ctrl+down可以切换到结果区，然后up/down可以移动光标。
+    
+    ctrl+shift+i        格式化文档
+    
+
+
+
+vscode vim note:
+    gd - Go to definition, 跳转到定义。
+    gb - 找出与光标下相同的下一个单词, 并添加一个光标 ，接下来就可以同时修改。
+    af - VISUAL 模式命令, 依据语法分析, 将选择区域向外扩展。
+    gh - 等同于将鼠标移至光标所在单词, 方便查看定义以及报错。
+
+    gc      注释, gc 是 go comment, 两个 c 表示注释一行
+    ngcc    注释多行，再次 gcc 取消注释，和 Ctrl+/同样的效果

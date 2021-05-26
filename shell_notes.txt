@@ -4,7 +4,7 @@ top cm d1 M
 -n1 执行次数
 -o 排序字段; -oRES : 按RES字段排序; -O查看字段名字;
 -p 指定要监控的pid
-
+e/E 修改标题区/进程列表区的内存显示单位
 
 
 netstat -Wenptu
